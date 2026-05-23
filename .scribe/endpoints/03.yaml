@@ -1,0 +1,235 @@
+name: Verification
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/ecard/verification/mobile/send
+    metadata:
+      groupName: Verification
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Send Mobile OTP'
+      description: "Send an OTP to the user's registered mobile number for verification."
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "OTP sent successfully to registered mobile number.",
+           "dev_otp": 123456
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/ecard/verification/mobile/verify
+    metadata:
+      groupName: Verification
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Verify Mobile OTP'
+      description: 'Verify the OTP sent to the mobile number.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      otp:
+        name: otp
+        description: 'The 6-digit OTP.'
+        required: true
+        example: '123456'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      otp: '123456'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "Mobile number verified successfully."
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+           "message": "The given data was invalid.",
+           "errors": {
+             "otp": ["Invalid or expired OTP."]
+           }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/ecard/verification/email/send
+    metadata:
+      groupName: Verification
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Send Email OTP'
+      description: "Send an OTP to the user's registered email address for verification."
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "OTP sent successfully to registered email address."
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+           "message": "No email address found for this user."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/ecard/verification/email/verify
+    metadata:
+      groupName: Verification
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Verify Email OTP'
+      description: 'Verify the OTP sent to the email address.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      otp:
+        name: otp
+        description: 'The 6-digit OTP.'
+        required: true
+        example: '123456'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      otp: '123456'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "Email address verified successfully."
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+           "message": "The given data was invalid.",
+           "errors": {
+             "otp": ["Invalid or expired OTP."]
+           }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []

@@ -1,0 +1,137 @@
+name: 'MPIN Management'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/ecard/mpin/update
+    metadata:
+      groupName: 'MPIN Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update MPIN'
+      description: 'Update or set the MPIN for the authenticated user.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      mpin:
+        name: mpin
+        description: 'The new MPIN (4-6 digits).'
+        required: true
+        example: '1234'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      mpin: '1234'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "MPIN updated successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+           "message": "The given data was invalid.",
+           "errors": {
+             "mpin": ["The mpin must be between 4 and 6 digits."]
+           }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/ecard/mpin/verify
+    metadata:
+      groupName: 'MPIN Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Verify MPIN'
+      description: 'Verify the MPIN for the authenticated user.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      mpin:
+        name: mpin
+        description: 'The MPIN to verify.'
+        required: true
+        example: '1234'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      mpin: '1234'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "MPIN verified successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |-
+          {
+           "message": "The given data was invalid.",
+           "errors": {
+             "mpin": ["Invalid MPIN."]
+           }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []

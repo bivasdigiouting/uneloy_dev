@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - UOnly</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            border: none;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .icon-blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .icon-green { background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%); }
+        .icon-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .icon-purple { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        
+        .btn-custom {
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        .department-badge {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-user-circle me-2"></i>UOnly Portal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ route('user.dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i>My Profile
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileMenu">
+                            <li><a class="dropdown-item" href="{{ route('user.profile') }}">Profile Update</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.password.show') }}">Change Password</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.pin.change.show') }}">Change Pin Password</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.upgrade.show') }}">Upgrade Id</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.kyc.show') }}">Upload KYC Document</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.ecard.show') }}">E Card</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.ecard.details') }}">E Card Details</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.links') }}">Links</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.login_history') }}">Login History</a></li>
+                        </ul>
+                    </li>
+                    <!-- Wallet dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="walletMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-money-bill-transfer me-1"></i>Wallet
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="walletMenu">
+                            <li><a class="dropdown-item" href="{{ route('user.wallet.request.show') }}">Wallet Request</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.wallet.transactions') }}">Wallet Transaction Details</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.wallet.settlement.show') }}">Bank settlement Request</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.wallet.transfer.qr.show') }}">QR to QR user Amount Transfer</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.wallet.transfer.user.show') }}">User to User Amount Transfer</a></li>
+                        </ul>
+                    </li>
+                    <!-- Advertisement dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adsMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bullhorn me-1"></i>Advertisement
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adsMenu">
+                            <li><a class="dropdown-item" href="{{ route('user.advertisement.show') }}">Advertisement</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.advertisement.report') }}">Advertisement Report</a></li>
+                        </ul>
+                    </li>
+                    <!-- Benefit dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="benefitMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-hand-holding-heart me-1"></i>Benefit
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="benefitMenu">
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.bookcamp.show') }}">Book Camp</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.bookcamp.report') }}">Book Camp Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.eligible.report') }}">Eligible Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.schemefund.report') }}">Scheme Fund Report</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.ecard.seva.request.show') }}">E-Card Seva Request</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.ecard.seva.self.report') }}">E-Card Seva Self Req. Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.ecard.seva.other.details') }}">E-Card Seva Other Req. Details</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.blood.request.show') }}">Blood Donate Request</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.blood.self.report') }}">Blood Donate Self Req. Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.blood.other.details') }}">Blood Donate Other Req. Details</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.emergency.ecard.request.show') }}">Emergency E-Card Seva Request</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.emergency.ecard.self.report') }}">Emergency E-Card Self Req. Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.emergency.ecard.other.details') }}">Emergency E-Card Other Req. Details</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.benefit.emergency.family.contacts') }}">Emergency Family Contact List</a></li>
+                        </ul>
+                    </li>
+                    <!-- Service dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="serviceMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-concierge-bell me-1"></i>Service
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="serviceMenu">
+                            <li><a class="dropdown-item" href="{{ route('user.service.orders.view') }}">View Orders</a></li>
+                        </ul>
+                    </li>
+                    <!-- Report dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="reportMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-chart-line me-1"></i>Report
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="reportMenu">
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.admin.points') }}">Admin by Points Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.vendor.points') }}">Vendor by Points Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.coupon.summary') }}">Coupon Summary Detail Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.voucher.detail') }}">Voucher Detail Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.global.disbursement.fund') }}">Global Disbur. Fund Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.physically.challenged.fund') }}">Physically Challenged Fund Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.monthwise.user.redeem') }}">M. Wise User Redeem Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.report.reward') }}">Reward Report</a></li>
+                        </ul>
+                    </li>
+                    <!-- Recharge dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="rechargeMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bolt me-1"></i>Recharge
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="rechargeMenu">
+                            <li><a class="dropdown-item" href="{{ route('user.service.recharge.report') }}">Recharge Report</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.service.recharge.utility.link') }}">Utility Link</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('user.logout') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="nav-link btn btn-link text-white" style="border: none; background: none;">
+                                <i class="fas fa-sign-out-alt me-1"></i>Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        <!-- Welcome Card -->
+        <div class="card welcome-card">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-center">
+                        <div class="user-avatar mx-auto">
+                            {{ strtoupper(substr($user['full_name'], 0, 1)) }}
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <h2 class="mb-2">Welcome back, {{ $user['full_name'] }}!</h2>
+                        <p class="mb-2">
+                            <i class="fas fa-id-card me-2"></i>User ID: <strong>{{ $user['user_id'] }}</strong>
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>{{ $user['email'] }}
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-building me-2"></i>{{ $user['business_name'] ?? 'N/A' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Overview -->
+        @php
+            $wallet = [
+                'e_wallet' => 0,
+                'bonus' => 0,
+                'daily_wallet' => 0,
+                'total_wallet' => 0,
+            ];
+        @endphp
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3"><i class="fas fa-wallet me-2"></i>Wallet Overview</h4>
+            </div>
+            <!-- E Wallet -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body p-4 text-center">
+                        <div class="card-icon icon-blue mx-auto">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">E Wallet</h6>
+                        <div class="fs-3 fw-bold">₹ {{ number_format($wallet['e_wallet'], 2) }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bonus -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body p-4 text-center">
+                        <div class="card-icon icon-green mx-auto">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">Bonus</h6>
+                        <div class="fs-3 fw-bold">₹ {{ number_format($wallet['bonus'], 2) }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Daily Wallet -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body p-4 text-center">
+                        <div class="card-icon icon-orange mx-auto">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">Daily Wallet</h6>
+                        <div class="fs-3 fw-bold">₹ {{ number_format($wallet['daily_wallet'], 2) }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Total Wallet -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body p-4 text-center">
+                        <div class="card-icon icon-purple mx-auto">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">Total Wallet</h6>
+                        <div class="fs-3 fw-bold">₹ {{ number_format($wallet['total_wallet'], 2) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Details -->
+        <div class="row mt-1">
+            <div class="col-12">
+                <div class="card info-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0"><i class="fas fa-credit-card me-2"></i>Wallet Details</h5>
+                            <span class="badge bg-primary">Live</span>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-7 mb-3 mb-md-0">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-muted">Current Balance</span>
+                                            <span class="fw-semibold">₹ {{ number_format($wallet['e_wallet'], 2) }}</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-muted">Today's Earnings</span>
+                                            <span class="fw-semibold">₹ {{ number_format($wallet['daily_wallet'], 2) }}</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-muted">Monthly Bonus</span>
+                                            <span class="fw-semibold">₹ {{ number_format($wallet['bonus'], 2) }}</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-muted">Cumulative Total</span>
+                                            <span class="fw-semibold">₹ {{ number_format($wallet['total_wallet'], 2) }}</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="p-3 rounded" style="background: #f7f9fc;">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="card-icon icon-blue me-3" style="width:48px;height:48px;font-size:20px;">
+                                            <i class="fas fa-coins"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-muted small">Primary Wallet</div>
+                                            <div class="h6 mb-0">₹ {{ number_format($wallet['e_wallet'], 2) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary-custom btn-custom" disabled>
+                                            <i class="fas fa-plus-circle me-2"></i>Add Funds
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-custom" disabled>
+                                            <i class="fas fa-arrow-circle-down me-2"></i>Withdraw
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-custom" disabled>
+                                            <i class="fas fa-file-invoice me-2"></i>View Statements
+                                        </button>
+                                    </div>
+                                    <p class="text-muted small mt-3 mb-0">Actions are placeholders. Integrations can be wired to your wallet APIs later.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="row">
+            <!-- Profile Information -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="card-icon icon-blue mx-auto">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h5 class="card-title">Profile</h5>
+                        <p class="card-text text-muted">Manage your personal information and account settings</p>
+                        <a href="{{ route('user.profile') }}" class="btn btn-primary-custom btn-custom">
+                            <i class="fas fa-edit me-1"></i>Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Department Access -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="card-icon icon-green mx-auto">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h5 class="card-title">Department Access</h5>
+                        <div class="department-badge mb-3">
+                            {{ ucwords(str_replace('_', ' ', $user['department_level'])) }} Member
+                        </div>
+                        <p class="card-text text-muted small">Your current department level and access permissions</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Category -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="card-icon icon-orange mx-auto">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <h5 class="card-title">Business Category</h5>
+                        <p class="card-text">
+                            <strong>{{ ucwords(str_replace('_', ' ', $user['business_category'])) }}</strong>
+                        </p>
+                        <p class="card-text text-muted small">Your registered business category</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Security -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card info-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="card-icon icon-purple mx-auto">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="card-title">Security</h5>
+                        <p class="card-text text-muted">Change your password and security settings</p>
+                        <button type="button" class="btn btn-primary-custom btn-custom" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <i class="fas fa-key me-1"></i>Change Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card info-card">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-3">
+                            <i class="fas fa-bolt me-2"></i>Quick Actions
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ route('user.profile') }}" class="btn btn-outline-primary btn-custom w-100">
+                                    <i class="fas fa-user-edit me-2"></i>Update Profile
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button type="button" class="btn btn-outline-success btn-custom w-100" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                    <i class="fas fa-lock me-2"></i>Change Password
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <form method="POST" action="{{ route('user.logout') }}" class="d-inline w-100">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger btn-custom w-100">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-key me-2"></i>Change Password
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" action="{{ route('user.password.change') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="current_password" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="current_password" name="current_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_password" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="new_password" name="new_password" required minlength="8">
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_password_confirmation" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary-custom">
+                            <i class="fas fa-save me-1"></i>Update Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

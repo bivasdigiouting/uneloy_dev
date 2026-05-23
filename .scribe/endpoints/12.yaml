@@ -1,0 +1,221 @@
+name: KYC
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/auth/identity/aadhaar
+    metadata:
+      groupName: KYC
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Aadhaar front/back image URLs for the authenticated user.'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "message": "Aadhaar image URLs fetched successfully.",
+            "data": {
+              "front_image_url": "https://example.com/storage/aadhaar/1/front.jpg",
+              "back_image_url": "https://example.com/storage/aadhaar/1/back.jpg"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/identity/aadhaar
+    metadata:
+      groupName: KYC
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Upload or update Aadhaar front/back images for the authenticated user.'
+      description: |-
+        - Accepts two optional files: `aadhaar_front` and `aadhaar_back`.
+        - Stores files on the public disk and saves paths in the database.
+        - Returns full URLs (with base URL) for both images.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: multipart/form-data
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      aadhaar_front:
+        name: aadhaar_front
+        description: 'optional The Aadhaar front image file.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      aadhaar_back:
+        name: aadhaar_back
+        description: 'optional The Aadhaar back image file.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters: []
+    fileParameters:
+      aadhaar_front: null
+      aadhaar_back: null
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "message": "Aadhaar images updated successfully.",
+            "data": {
+              "front_image_url": "https://example.com/storage/aadhaar/1/front.jpg",
+              "back_image_url": "https://example.com/storage/aadhaar/1/back.jpg"
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/auth/ecard-seva/share-profile
+    metadata:
+      groupName: KYC
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get share profile to E-Card Seva status.'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"success":true,"message":"Share profile status fetched.","data":{"share_profile":true}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/ecard-seva/share-profile
+    metadata:
+      groupName: KYC
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update share profile to E-Card Seva status.'
+      description: |-
+        - Accepts `share_profile` as a boolean (true/false).
+        - Persists to `registrations.share_profile_to_ecard_seva`.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      share_profile:
+        name: share_profile
+        description: 'Whether to share profile to E-Card Seva.'
+        required: true
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      share_profile: false
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"success":true,"message":"Share profile status updated.","data":{"share_profile":true}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []

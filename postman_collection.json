@@ -1,0 +1,1558 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "https:\/\/ecardseva.uonely.com"
+        }
+    ],
+    "info": {
+        "name": "Uonely Solution Pvt. Ltd. - A Company that provide, infinite solutions. API Documentation",
+        "_postman_id": "eb25027f-43b5-4053-8d4d-3cc88f61e82f",
+        "description": "ECard App API provides endpoints for ECard user authentication, MPIN management, and profile verification.",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "description": "",
+            "item": [
+                {
+                    "name": "ECard Login",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"login\":\"USER123\",\"password\":\"password123\"}"
+                        },
+                        "description": "Authenticate an ECard user using User ID, Email, or Mobile Number.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"Login successful\",\n \"token\": \"1|laravel_sanctum_token...\",\n \"user\": {\n     \"id\": 1,\n     \"user_level\": \"state_level\",\n     \"department_level\": \"state_level\"\n }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\n   \"login\": [\"The provided credentials are incorrect.\"]\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "ECard Logout",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Revoke the current user's access token."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"Logged out successfully\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "ECard Registration",
+            "description": "",
+            "item": [
+                {
+                    "name": "Register New User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/registration\/list",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/registration\/list"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "department_level",
+                                    "value": "state_level",
+                                    "type": "text",
+                                    "description": "nullable The current department level."
+                                },
+                                {
+                                    "key": "business_category",
+                                    "value": "Private limited",
+                                    "type": "text",
+                                    "description": "nullable The business category."
+                                },
+                                {
+                                    "key": "first_name",
+                                    "value": "John",
+                                    "type": "text",
+                                    "description": "nullable First name."
+                                },
+                                {
+                                    "key": "last_name",
+                                    "value": "Doe",
+                                    "type": "text",
+                                    "description": "nullable Last name."
+                                },
+                                {
+                                    "key": "state_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "nullable State ID."
+                                },
+                                {
+                                    "key": "district_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "nullable District ID."
+                                },
+                                {
+                                    "key": "city_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "nullable City ID or '__other__'."
+                                },
+                                {
+                                    "key": "mobile_no",
+                                    "value": "9876543210",
+                                    "type": "text",
+                                    "description": "nullable Mobile number."
+                                },
+                                {
+                                    "key": "email_id",
+                                    "value": "john@example.com",
+                                    "type": "text",
+                                    "description": "nullable Email address."
+                                },
+                                {
+                                    "key": "profile_image",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Create a new ECard Registration or Customer Registration."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Register New User",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/registration\/create",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/registration\/create"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "department_level",
+                                    "value": "state_level",
+                                    "type": "text",
+                                    "description": "nullable The current department level."
+                                },
+                                {
+                                    "key": "business_category",
+                                    "value": "Private limited",
+                                    "type": "text",
+                                    "description": "nullable The business category."
+                                },
+                                {
+                                    "key": "first_name",
+                                    "value": "John",
+                                    "type": "text",
+                                    "description": "nullable First name."
+                                },
+                                {
+                                    "key": "middle_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Middle name. Example:"
+                                },
+                                {
+                                    "key": "last_name",
+                                    "value": "Doe",
+                                    "type": "text",
+                                    "description": "nullable Last name."
+                                },
+                                {
+                                    "key": "father_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Father's name."
+                                },
+                                {
+                                    "key": "mother_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Mother's name."
+                                },
+                                {
+                                    "key": "blood_group",
+                                    "value": "A+",
+                                    "type": "text",
+                                    "description": "nullable Blood group."
+                                },
+                                {
+                                    "key": "date_of_birth",
+                                    "value": "1990-01-01",
+                                    "type": "text",
+                                    "description": "nullable Date of birth."
+                                },
+                                {
+                                    "key": "gender",
+                                    "value": "Male",
+                                    "type": "text",
+                                    "description": "nullable Gender."
+                                },
+                                {
+                                    "key": "marital_status",
+                                    "value": "Single",
+                                    "type": "text",
+                                    "description": "nullable Marital status."
+                                },
+                                {
+                                    "key": "current_address",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Current address."
+                                },
+                                {
+                                    "key": "permanent_address",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Permanent address."
+                                },
+                                {
+                                    "key": "nationality",
+                                    "value": "INDIA",
+                                    "type": "text",
+                                    "description": "nullable Nationality."
+                                },
+                                {
+                                    "key": "state_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "nullable State ID."
+                                },
+                                {
+                                    "key": "district_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "nullable District ID."
+                                },
+                                {
+                                    "key": "city_id",
+                                    "value": "1",
+                                    "type": "text",
+                                    "description": "nullable City ID or '__other__'."
+                                },
+                                {
+                                    "key": "city_other",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Other city name if city_id is __other__."
+                                },
+                                {
+                                    "key": "pin_code",
+                                    "value": "123456",
+                                    "type": "text",
+                                    "description": "nullable Pin code."
+                                },
+                                {
+                                    "key": "mobile_no",
+                                    "value": "9876543210",
+                                    "type": "text",
+                                    "description": "nullable Mobile number."
+                                },
+                                {
+                                    "key": "phone_no",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Phone number."
+                                },
+                                {
+                                    "key": "email_id",
+                                    "value": "john@example.com",
+                                    "type": "text",
+                                    "description": "nullable Email address."
+                                },
+                                {
+                                    "key": "gmail_id",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Gmail address."
+                                },
+                                {
+                                    "key": "live_location_map",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Live location map URL."
+                                },
+                                {
+                                    "key": "ifsc_code",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Bank IFSC code."
+                                },
+                                {
+                                    "key": "bank_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Bank name."
+                                },
+                                {
+                                    "key": "branch_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Branch name."
+                                },
+                                {
+                                    "key": "account_no",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Account number."
+                                },
+                                {
+                                    "key": "pan_no",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable PAN number."
+                                },
+                                {
+                                    "key": "aadhaar_no",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Aadhaar number."
+                                },
+                                {
+                                    "key": "last_qualification",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Last qualification."
+                                },
+                                {
+                                    "key": "work_type",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Work type."
+                                },
+                                {
+                                    "key": "work_experience",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Work experience."
+                                },
+                                {
+                                    "key": "agree_terms",
+                                    "value": "",
+                                    "type": "text",
+                                    "description": "nullable Agree to terms."
+                                },
+                                {
+                                    "key": "customer_user_type",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Customer user type (free\/paid)."
+                                },
+                                {
+                                    "key": "first_recharge_plan_id",
+                                    "value": "17",
+                                    "type": "text",
+                                    "description": "nullable First recharge plan ID."
+                                },
+                                {
+                                    "key": "business_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business name."
+                                },
+                                {
+                                    "key": "business_mobile",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business mobile."
+                                },
+                                {
+                                    "key": "business_whatsapp",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business whatsapp."
+                                },
+                                {
+                                    "key": "business_gmail",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business gmail."
+                                },
+                                {
+                                    "key": "business_address",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business address."
+                                },
+                                {
+                                    "key": "business_gst",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business GST."
+                                },
+                                {
+                                    "key": "business_upi",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business UPI."
+                                },
+                                {
+                                    "key": "business_location_map",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Business location map."
+                                },
+                                {
+                                    "key": "otp_required",
+                                    "value": "",
+                                    "type": "text",
+                                    "description": "nullable OTP required."
+                                },
+                                {
+                                    "key": "otp_code",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable OTP code."
+                                },
+                                {
+                                    "key": "area",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Area (Village_area\/Municipality_area)."
+                                },
+                                {
+                                    "key": "panchayat",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Panchayat name."
+                                },
+                                {
+                                    "key": "village_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Village name."
+                                },
+                                {
+                                    "key": "panchayat_other",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Other panchayat name."
+                                },
+                                {
+                                    "key": "village_other",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Other village name."
+                                },
+                                {
+                                    "key": "municipality",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Municipality name."
+                                },
+                                {
+                                    "key": "municipality_id",
+                                    "value": "17",
+                                    "type": "text",
+                                    "description": "nullable Municipality ID."
+                                },
+                                {
+                                    "key": "municipality_other",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Other municipality name."
+                                },
+                                {
+                                    "key": "ward_no",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Ward number."
+                                },
+                                {
+                                    "key": "ward_other",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "nullable Other ward number."
+                                },
+                                {
+                                    "key": "profile_image",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Create a new ECard Registration or Customer Registration."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "Handles the API request and renders the Swagger documentation view.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/documentation",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/documentation"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 500,
+                            "body": "{\n    \"message\": \"Server Error\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Handles the OAuth2 callback and retrieves the required file for the redirect.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/oauth2-callback",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/oauth2-callback"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "content-type",
+                                    "value": "text\/html; charset=UTF-8"
+                                },
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "<!doctype html>\n<html lang=\"en-US\">\n<body>\n<\/body>\n<\/html>\n<script src=\"oauth2-redirect.js\"><\/script>",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "MPIN Management",
+            "description": "",
+            "item": [
+                {
+                    "name": "Update MPIN",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/mpin\/update",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/mpin\/update"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mpin\":\"1234\"}"
+                        },
+                        "description": "Update or set the MPIN for the authenticated user."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"MPIN updated successfully\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\n   \"mpin\": [\"The mpin must be between 4 and 6 digits.\"]\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify MPIN",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/mpin\/verify",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/mpin\/verify"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mpin\":\"1234\"}"
+                        },
+                        "description": "Verify the MPIN for the authenticated user."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"MPIN verified successfully\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\n   \"mpin\": [\"Invalid MPIN.\"]\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Master Data",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get States",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/states",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/states"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Fetch list of all active states."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"states\": [\n   {\"id\": 1, \"state_name\": \"Maharashtra\", \"status\": \"active\"},\n   {\"id\": 2, \"state_name\": \"Karnataka\", \"status\": \"active\"}\n ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Districts",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/districts\/:state_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/districts\/:state_id",
+                            "variable": [
+                                {
+                                    "id": "state_id",
+                                    "key": "state_id",
+                                    "value": "17",
+                                    "description": "The ID of the state."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Fetch list of districts for a given state."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"districts\": [\n   {\"id\": 1, \"district_name\": \"Pune\", \"state_id\": 1, \"status\": \"active\"}\n ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Cities",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/cities\/:district_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/cities\/:district_id",
+                            "variable": [
+                                {
+                                    "id": "district_id",
+                                    "key": "district_id",
+                                    "value": "17",
+                                    "description": "The ID of the district."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Fetch list of cities for a given district."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"cities\": [\n   {\"id\": 1, \"city_name\": \"Pune City\", \"district_id\": 1, \"status\": \"active\"}\n ]\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "QR Code",
+            "description": "\nAPIs for generating and viewing QR codes for ECard users.",
+            "item": [
+                {
+                    "name": "Generate QR Code",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/qrcode\/generate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/qrcode\/generate"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Generate a QR code for the authenticated user based on their User ID.\nIf the QR code already exists in the database, it returns the existing URL.\nOtherwise, it generates a new one, saves it, and updates the database."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"QR Code generated successfully\",\n \"url\": \"http:\/\/localhost\/storage\/qrcodes\/user_1.png\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "View QR Code",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/qrcode\/view",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/qrcode\/view"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieve the generated QR code image for the authenticated user.\nUses the path stored in the database if available."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "<<binary data>>",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n \"message\": \"QR Code not found. Please generate it first.\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "User Profile",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Profile",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/profile"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Fetch the authenticated user's profile details."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"Profile fetched successfully\",\n \"user\": {\n   \"id\": 1,\n   \"first_name\": \"John\",\n   \"last_name\": \"Doe\",\n   \"mobile_no\": \"9876543210\",\n   \"email_id\": \"john@example.com\",\n   \"profile_image_url\": \"http:\/\/localhost\/storage\/profile_images\/abc.jpg\",\n   \"state\": \"1\",\n   \"district\": \"2\",\n   \"city\": \"3\",\n   \"whatsapp_no\": \"9876543210\",\n   \"user_level\": \"state_level\"\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Profile",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/profile\/update",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/profile\/update"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "first_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "First Name."
+                                },
+                                {
+                                    "key": "middle_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Middle Name."
+                                },
+                                {
+                                    "key": "last_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Last Name."
+                                },
+                                {
+                                    "key": "father_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Father's Name."
+                                },
+                                {
+                                    "key": "mother_name",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Mother's Name."
+                                },
+                                {
+                                    "key": "blood_group",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Blood Group (e.g., A+, B-)."
+                                },
+                                {
+                                    "key": "date_of_birth",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Date of Birth (YYYY-MM-DD)."
+                                },
+                                {
+                                    "key": "gender",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Gender (Male, Female, Other)."
+                                },
+                                {
+                                    "key": "marital_status",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Marital Status (Single, Married, Divorced, Widowed)."
+                                },
+                                {
+                                    "key": "mobile_no",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Mobile Number."
+                                },
+                                {
+                                    "key": "whatsapp_no",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "WhatsApp Number."
+                                },
+                                {
+                                    "key": "email_id",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Email Address."
+                                },
+                                {
+                                    "key": "gmail_id",
+                                    "value": "yjpxmqesedyghenqcopwv",
+                                    "type": "text",
+                                    "description": "Must be a valid email address. Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "current_address",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Current Address."
+                                },
+                                {
+                                    "key": "permanent_address",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Permanent Address."
+                                },
+                                {
+                                    "key": "state",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "State ID or Name."
+                                },
+                                {
+                                    "key": "district",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "District ID or Name."
+                                },
+                                {
+                                    "key": "city",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "City ID or Name."
+                                },
+                                {
+                                    "key": "pin_code",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Pin Code."
+                                },
+                                {
+                                    "key": "last_qualification",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Last Qualification."
+                                },
+                                {
+                                    "key": "work_type",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Work Type."
+                                },
+                                {
+                                    "key": "work_experience",
+                                    "value": "consequatur",
+                                    "type": "text",
+                                    "description": "Work Experience."
+                                },
+                                {
+                                    "key": "profile_image",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Update the user's profile information including profile image."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"Profile updated successfully\",\n \"user\": {\n   \"first_name\": \"John\",\n   \"last_name\": \"Doe\",\n   \"profile_image\": \"profile_images\/xyz.jpg\"\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Verification",
+            "description": "",
+            "item": [
+                {
+                    "name": "Send Mobile OTP",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/verification\/mobile\/send",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/verification\/mobile\/send"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Send an OTP to the user's registered mobile number for verification."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"OTP sent successfully to registered mobile number.\",\n \"dev_otp\": 123456\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify Mobile OTP",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/verification\/mobile\/verify",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/verification\/mobile\/verify"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"otp\":\"123456\"}"
+                        },
+                        "description": "Verify the OTP sent to the mobile number."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"Mobile number verified successfully.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\n   \"otp\": [\"Invalid or expired OTP.\"]\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Send Email OTP",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/verification\/email\/send",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/verification\/email\/send"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Send an OTP to the user's registered email address for verification."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"OTP sent successfully to registered email address.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n \"message\": \"No email address found for this user.\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify Email OTP",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/verification\/email\/verify",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/verification\/email\/verify"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"otp\":\"123456\"}"
+                        },
+                        "description": "Verify the OTP sent to the email address."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"message\": \"Email address verified successfully.\"\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n \"message\": \"The given data was invalid.\",\n \"errors\": {\n   \"otp\": [\"Invalid or expired OTP.\"]\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Wallet",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Wallet Balance",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/wallet\/balance",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/wallet\/balance"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the current wallet balance of the authenticated user."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Wallet Transactions",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/wallet\/transactions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/wallet\/transactions"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a paginated list of wallet transactions."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Add Money",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/wallet\/add-money",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/wallet\/add-money"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"amount\":100}"
+                        },
+                        "description": "Initiates a wallet top-up transaction using the active payment gateway."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Verify Payment",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/ecard\/wallet\/verify-payment",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/ecard\/wallet\/verify-payment"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"order_id\":\"consequatur\"}"
+                        },
+                        "description": "Verifies the payment status with the gateway and updates the wallet balance."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}

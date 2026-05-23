@@ -1,0 +1,300 @@
+name: Wallet
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/auth/wallet/balance
+    metadata:
+      groupName: Wallet
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Fetch Wallet Balance'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/auth/wallet/transactions
+    metadata:
+      groupName: Wallet
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List Wallet Transactions'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/wallet/transactions
+    metadata:
+      groupName: Wallet
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create Wallet Transaction (Credit/Debit)'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      type:
+        name: type
+        description: ''
+        required: true
+        example: add
+        type: string
+        enumValues:
+          - add
+          - remove
+          - credit
+          - debit
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      amount:
+        name: amount
+        description: 'Must be at least 0.01.'
+        required: true
+        example: 73
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      narration:
+        name: narration
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: mqeopfuudtdsufvyvddqa
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      type: add
+      amount: 73
+      narration: mqeopfuudtdsufvyvddqa
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/wallet/balance/add
+    metadata:
+      groupName: Wallet
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Add Wallet Balance (Convenience)'
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/auth/wallet/topup
+    metadata:
+      groupName: Wallet
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: |-
+        Add funds to user wallet via active payment gateway
+
+        This endpoint credits a user's wallet by the specified amount, attributing
+        the transaction to the currently active payment gateway (eg. PhonePe or Cashfree).
+        It records a credit note on the wallet transaction for audit purposes.
+      description: ''
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      registration_id:
+        name: registration_id
+        description: 'The target registration ID.'
+        required: true
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      amount:
+        name: amount
+        description: 'The amount to add. Must be > 0.'
+        required: true
+        example: 250.5
+        type: number
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      note:
+        name: note
+        description: 'Optional additional note to append to the credit note.'
+        required: false
+        example: '"Manual top-up"'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      registration_id: 12
+      amount: 250.5
+      note: '"Manual top-up"'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "message": "Wallet topped up successfully",
+            "data": {
+              "transaction": {
+                "id": 101,
+                "registration_id": 12,
+                "transaction_type": "add",
+                "amount": "250.50",
+                "previous_balance": "1000.00",
+                "new_balance": "1250.50",
+                "narration": "Wallet top-up",
+                "credit_note": "Top-up via PhonePe (test)",
+                "debit_note": null
+              }
+            }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: '{"success": false, "message": "No active payment gateway configured"}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []

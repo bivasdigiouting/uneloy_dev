@@ -1,0 +1,14 @@
+{
+  "Gujarat": {
+    "Ahmedabad": ["Ahmedabad", "Dholka", "Dhandhuka", "Sanand"],
+    "Surat": ["Surat", "Bardoli", "Vyara", "Olpad"],
+    "Vadodara": ["Vadodara", "Padra", "Karjan"],
+    "Rajkot": ["Rajkot", "Gondal", "Jasdan"]
+  },
+  "Maharashtra": {
+    "Mumbai Suburban": ["Andheri", "Bandra", "Borivali"],
+    "Pune": ["Pune", "Hadapsar", "Lonavala"],
+    "Nagpur": ["Nagpur", "Kamptee", "Kalameshwar"]
+  }
+}
+

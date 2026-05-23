@@ -1,0 +1,109 @@
+name: 'QR Code'
+description: |-
+
+  APIs for generating and viewing QR codes for ECard users.
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/ecard/qrcode/generate
+    metadata:
+      groupName: 'QR Code'
+      groupDescription: |-
+
+        APIs for generating and viewing QR codes for ECard users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Generate QR Code'
+      description: |-
+        Generate a QR code for the authenticated user based on their User ID.
+        If the QR code already exists in the database, it returns the existing URL.
+        Otherwise, it generates a new one, saves it, and updates the database.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "message": "QR Code generated successfully",
+           "url": "http://localhost/storage/qrcodes/user_1.png"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/ecard/qrcode/view
+    metadata:
+      groupName: 'QR Code'
+      groupDescription: |-
+
+        APIs for generating and viewing QR codes for ECard users.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'View QR Code'
+      description: |-
+        Retrieve the generated QR code image for the authenticated user.
+        Uses the path stored in the database if available.
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '<<binary data>>'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |-
+          {
+           "message": "QR Code not found. Please generate it first."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []

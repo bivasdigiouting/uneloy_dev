@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'profile' => 'Profile',
+    'manage' => 'Manage',
+    'my_qr' => 'My QR',
+    'wallet' => 'Wallet',
+    'card' => 'Card',
+    'transactions' => 'Transactions',
+    'device_permission' => 'Device Permission',
+    'login_history' => 'Login History',
+    'manage_payments' => 'Manage Payments',
+    'card_wallet_qr' => 'Card, Wallet & QR',
+    'general_settings' => 'General Settings',
+    'mode' => 'Mode',
+    'dark_light' => 'Dark & Light',
+    'security' => 'Security',
+    'language' => 'Language',
+    'refer_earn' => 'Refer & Earn',
+    'help_support' => 'Help & Support',
+    'about_ecard' => 'About E-Card',
+    'logout' => 'Logout',
+    'verify' => 'VERIFY',
+    'logout_confirmation_title' => 'Are you sure?',
+    'logout_confirmation_text' => 'You will be logged out of your account.',
+    'logout_confirm_button' => 'Yes, Logout',
+    'cancel' => 'Cancel',
+];

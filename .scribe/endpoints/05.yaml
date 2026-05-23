@@ -1,0 +1,164 @@
+name: 'Master Data'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/ecard/states
+    metadata:
+      groupName: 'Master Data'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get States'
+      description: 'Fetch list of all active states.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "states": [
+             {"id": 1, "state_name": "Maharashtra", "status": "active"},
+             {"id": 2, "state_name": "Karnataka", "status": "active"}
+           ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/ecard/districts/{state_id}'
+    metadata:
+      groupName: 'Master Data'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Districts'
+      description: 'Fetch list of districts for a given state.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      state_id:
+        name: state_id
+        description: 'The ID of the state.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      state_id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "districts": [
+             {"id": 1, "district_name": "Pune", "state_id": 1, "status": "active"}
+           ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/ecard/cities/{district_id}'
+    metadata:
+      groupName: 'Master Data'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Cities'
+      description: 'Fetch list of cities for a given district.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      district_id:
+        name: district_id
+        description: 'The ID of the district.'
+        required: true
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      district_id: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "cities": [
+             {"id": 1, "city_name": "Pune City", "district_id": 1, "status": "active"}
+           ]
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []

@@ -1,0 +1,2865 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost"
+        }
+    ],
+    "info": {
+        "name": "Uonely Solution Pvt. Ltd. - A Company that provide, infinite solutions. API Documentation",
+        "_postman_id": "3c765532-5012-42eb-83c7-7807969f1329",
+        "description": "UOnly API provides comprehensive endpoints for user authentication and product management with Laravel Sanctum security.",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "description": "",
+            "item": [
+                {
+                    "name": "Email Verification",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "Email Verification",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/email\/verification\/send",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/email\/verification\/send"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"email\":\"johndoe@example.com\"}"
+                                },
+                                "description": "Send a 6-digit verification code to the provided email.",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"message\":\"Verification code sent\"}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 404,
+                                    "body": "{\"message\":\"Email not found\"}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Verify Email Code",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/email\/verification\/verify",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/email\/verification\/verify"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"email\":\"johndoe@example.com\",\"code\":\"123456\"}"
+                                },
+                                "description": "Verify the 6-digit code sent to email and mark user verified.",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"message\":\"Email verified\",\"verified\": true}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 422,
+                                    "body": "{\"message\":\"Invalid or expired code\",\"verified\": false}",
+                                    "name": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Email Verification Status",
+                            "request": {
+                                "url": {
+                                    "host": "{{baseUrl}}",
+                                    "path": "api\/v1\/auth\/email\/verification\/status",
+                                    "query": [],
+                                    "raw": "{{baseUrl}}\/api\/v1\/auth\/email\/verification\/status"
+                                },
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application\/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application\/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\"email\":\"johndoe@example.com\"}"
+                                },
+                                "description": "Check whether a user's email is verified.",
+                                "auth": {
+                                    "type": "noauth"
+                                }
+                            },
+                            "response": [
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"verified\": true}",
+                                    "name": ""
+                                },
+                                {
+                                    "header": [],
+                                    "code": 200,
+                                    "body": "{\"verified\": false}",
+                                    "name": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Authentication",
+            "description": "",
+            "item": [
+                {
+                    "name": "POST api\/v1\/auth\/login",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"user_id\":\"UP12345678.\",\"email\":\"customer@example.com.\",\"password\":\"O[2UZ5ij-e\\\/dl4m{o,\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\": true, \"message\": \"Login successful\", \"data\": {\"user\": {\"id\": 12, \"name\": \"John Customer\", \"email\": \"customer@example.com\", \"user_id\": \"UP12345678\", \"role_id\": 3}, \"token\": \"1|abc123...\"}}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\"success\": false, \"message\": \"Invalid credentials\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"success\": false, \"message\": \"Validation failed\", \"errors\": {\"user_id\": [\"The user id or email is required.\"]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/auth\/change-password",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/change-password",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/change-password"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"current_password\":\"consequatur\",\"new_password\":\"consequatur\",\"new_password_confirmation\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"Password changed successfully\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"success\":false,\"message\":\"Validation failed\",\"errors\":{\"current_password\":[\"Current password is incorrect\"]}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "BBPS",
+            "description": "",
+            "item": [
+                {
+                    "name": "List BBPS Billers\/Operators",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/bbps\/billers",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/bbps\/billers"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": [{\"id\":1,\"operator_name\":\"Electricity Board\",\"operator_code\":\"ELEC\",\"is_active\":true}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Pay BBPS Bill",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/bbps\/pay",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/bbps\/pay"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"biller_code\":\"ELEC\",\"account_no\":\"1234567890\",\"amount\":750,\"payment_method\":\"ewallet\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"message\":\"Payment initiated\",\"transaction\":{\"transaction_id\":\"RCH202501011234560004\",\"status\":\"pending\",\"amount\":750,\"biller_code\":\"ELEC\",\"account_no\":\"1234567890\"}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Check BBPS Payment Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/bbps\/status\/:transaction_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/bbps\/status\/:transaction_id",
+                            "variable": [
+                                {
+                                    "id": "transaction_id",
+                                    "key": "transaction_id",
+                                    "value": "RCH202501011234560004",
+                                    "description": "The transaction id to check."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"transaction\":{\"transaction_id\":\"RCH202501011234560004\",\"status\":\"pending\",\"amount\":750,\"recharge_no\":\"1234567890\"}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "DTH Recharge",
+            "description": "",
+            "item": [
+                {
+                    "name": "List DTH Operators",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/recharge\/dth\/operators",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/recharge\/dth\/operators"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": [{\"id\":1,\"operator_name\":\"Example DTH\",\"operator_code\":\"DTHX\",\"is_active\":true}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Initiate DTH Recharge",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/recharge\/dth\/initiate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/recharge\/dth\/initiate"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"account_no\":\"1234567890\",\"operator_code\":\"DTHX\",\"amount\":300,\"payment_method\":\"eqr\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"message\":\"Recharge initiated\",\"transaction\":{\"transaction_id\":\"RCH202501011234560002\",\"status\":\"pending\",\"amount\":300,\"operator_code\":\"DTHX\",\"account_no\":\"1234567890\"}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Check DTH Recharge Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/recharge\/dth\/status\/:transaction_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/recharge\/dth\/status\/:transaction_id",
+                            "variable": [
+                                {
+                                    "id": "transaction_id",
+                                    "key": "transaction_id",
+                                    "value": "RCH202501011234560002",
+                                    "description": "The transaction id to check."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"transaction\":{\"transaction_id\":\"RCH202501011234560002\",\"status\":\"pending\",\"amount\":300,\"recharge_no\":\"1234567890\"}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Device Sharing",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Device Sharing Info",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/device-sharing",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/device-sharing"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Device Number",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/device-sharing",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/device-sharing"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"device_number\":\"vmqeopfuudtdsufvyvddq\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Device Sharing Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/device-sharing\/status",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/device-sharing\/status"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "Handles the API request and renders the Swagger documentation view.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/documentation",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/documentation"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 500,
+                            "body": "{\n    \"message\": \"Server Error\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Handles the OAuth2 callback and retrieves the required file for the redirect.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/oauth2-callback",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/oauth2-callback"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "content-type",
+                                    "value": "text\/html; charset=UTF-8"
+                                },
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "<!doctype html>\n<html lang=\"en-US\">\n<body>\n<\/body>\n<\/html>\n<script src=\"oauth2-redirect.js\"><\/script>",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/user"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get all active states",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/location\/states",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/location\/states"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"data\":[{\"id\":3,\"state_name\":\"rr\"},{\"id\":1,\"state_name\":\"Test State 1\"},{\"id\":2,\"state_name\":\"Test State 2\"}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get districts by state ID",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/location\/districts",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/location\/districts"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 400,
+                            "body": "{\"success\":false,\"message\":\"State ID is required\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get cities by district ID",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/location\/cities",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/location\/cities"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 400,
+                            "body": "{\"success\":false,\"message\":\"District ID is required\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get cities by state ID (for direct state to city mapping)",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/location\/cities-by-state",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/location\/cities-by-state"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 400,
+                            "body": "{\"success\":false,\"message\":\"State ID is required\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/v1\/docs",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/docs",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/docs"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"message\":\"UOnly API v1.0.0\",\"documentation\":\"Visit \\\/api\\\/documentation for Swagger UI\",\"endpoints\":{\"auth\":{\"POST \\\/api\\\/v1\\\/auth\\\/register\":\"Register a new user\",\"POST \\\/api\\\/v1\\\/auth\\\/login\":\"Login user\",\"POST \\\/api\\\/v1\\\/auth\\\/logout\":\"Logout user (requires auth)\",\"GET \\\/api\\\/v1\\\/auth\\\/profile\":\"Get user profile (requires auth)\",\"PUT \\\/api\\\/v1\\\/auth\\\/profile\":\"Update user profile (requires auth)\"},\"products\":{\"GET \\\/api\\\/v1\\\/products\":\"Get list of products\",\"POST \\\/api\\\/v1\\\/products\":\"Create a new product (requires auth)\",\"GET \\\/api\\\/v1\\\/products\\\/{id}\":\"Get product by ID\",\"PUT \\\/api\\\/v1\\\/products\\\/{id}\":\"Update product (requires auth)\",\"DELETE \\\/api\\\/v1\\\/products\\\/{id}\":\"Delete product (requires auth)\"}}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/auth\/register",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/register",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/register"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"email\":\"kunde.eloisa@example.com\",\"password\":\"4[*UyPJ\\\"}6\",\"phone\":\"hdtqtqxbajwbpilpm\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/v1\/auth\/logout",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/logout",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/logout"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/auth\/profile",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/profile"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "GET api\/v1\/products",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/products",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/products"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/products",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/products",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/products"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"description\":\"Dolores dolorum amet iste laborum eius est dolor.\",\"price\":12,\"stock_quantity\":66,\"sku\":\"dsufvyvddqamniihfqcoy\",\"category\":\"nlazghdtqtqxbajwbpilp\",\"brand\":\"mufinllwloauydlsmsjur\",\"images\":[\"consequatur\"],\"weight\":45,\"is_active\":false,\"is_featured\":true}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/v1\/products\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/products\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/products\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/v1\/products\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/products\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/products\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE api\/v1\/products\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/products\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/products\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "consequatur",
+                                    "description": "The ID of the product."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "FASTag Recharge",
+            "description": "",
+            "item": [
+                {
+                    "name": "List FASTag Operators",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/recharge\/fastag\/operators",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/recharge\/fastag\/operators"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\": [{\"id\":1,\"operator_name\":\"Example FASTag\",\"operator_code\":\"FSTG\",\"is_active\":true}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Initiate FASTag Recharge",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/recharge\/fastag\/initiate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/recharge\/fastag\/initiate"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"account_no\":\"TAG123456\",\"operator_code\":\"FSTG\",\"amount\":500,\"payment_method\":\"ecard\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"message\":\"Recharge initiated\",\"transaction\":{\"transaction_id\":\"RCH202501011234560003\",\"status\":\"pending\",\"amount\":500,\"operator_code\":\"FSTG\",\"account_no\":\"TAG123456\"}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Check FASTag Recharge Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/recharge\/fastag\/status\/:transaction_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/recharge\/fastag\/status\/:transaction_id",
+                            "variable": [
+                                {
+                                    "id": "transaction_id",
+                                    "key": "transaction_id",
+                                    "value": "RCH202501011234560003",
+                                    "description": "The transaction id to check."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"transaction\":{\"transaction_id\":\"RCH202501011234560003\",\"status\":\"pending\",\"amount\":500,\"recharge_no\":\"TAG123456\"}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "KYC",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Aadhaar front\/back image URLs for the authenticated user.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/identity\/aadhaar",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/identity\/aadhaar"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"message\": \"Aadhaar image URLs fetched successfully.\",\n  \"data\": {\n    \"front_image_url\": \"https:\/\/example.com\/storage\/aadhaar\/1\/front.jpg\",\n    \"back_image_url\": \"https:\/\/example.com\/storage\/aadhaar\/1\/back.jpg\"\n  }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Upload or update Aadhaar front\/back images for the authenticated user.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/identity\/aadhaar",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/identity\/aadhaar"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "aadhaar_front",
+                                    "src": [],
+                                    "type": "file"
+                                },
+                                {
+                                    "key": "aadhaar_back",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "- Accepts two optional files: `aadhaar_front` and `aadhaar_back`.\n- Stores files on the public disk and saves paths in the database.\n- Returns full URLs (with base URL) for both images."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"message\": \"Aadhaar images updated successfully.\",\n  \"data\": {\n    \"front_image_url\": \"https:\/\/example.com\/storage\/aadhaar\/1\/front.jpg\",\n    \"back_image_url\": \"https:\/\/example.com\/storage\/aadhaar\/1\/back.jpg\"\n  }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get share profile to E-Card Seva status.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/ecard-seva\/share-profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/ecard-seva\/share-profile"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"Share profile status fetched.\",\"data\":{\"share_profile\":true}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update share profile to E-Card Seva status.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/ecard-seva\/share-profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/ecard-seva\/share-profile"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"share_profile\":false}"
+                        },
+                        "description": "- Accepts `share_profile` as a boolean (true\/false).\n- Persists to `registrations.share_profile_to_ecard_seva`."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"Share profile status updated.\",\"data\":{\"share_profile\":true}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Location",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get all active states",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/location\/states",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/location\/states"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"data\":[{\"id\":1,\"state_name\":\"Gujarat\"}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get all active districts by state",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/location\/districts",
+                            "query": [
+                                {
+                                    "key": "state_id",
+                                    "value": "5",
+                                    "description": "The state ID.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/location\/districts?state_id=5"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"data\":[{\"id\":1,\"district_name\":\"Ahmedabad\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"success\":false,\"message\":\"State ID is required\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get all active cities by state and district",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/location\/cities",
+                            "query": [
+                                {
+                                    "key": "state_id",
+                                    "value": "5",
+                                    "description": "The state ID.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "district_id",
+                                    "value": "12",
+                                    "description": "The district ID.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/location\/cities?state_id=5&district_id=12"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"data\":[{\"id\":1,\"city_name\":\"Ahmedabad\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"success\":false,\"message\":\"State ID and District ID are required\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Login History",
+            "description": "",
+            "item": [
+                {
+                    "name": "List Login History",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/login-history",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/login-history"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Mobile Recharge",
+            "description": "",
+            "item": [
+                {
+                    "name": "List Mobile Operators",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/recharge\/mobile\/operators",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/recharge\/mobile\/operators"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"data\": [\n   {\"id\": 1, \"operator_name\": \"Example Operator\", \"operator_code\": \"EXM\", \"is_active\": true}\n ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Initiate Mobile Recharge",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/recharge\/mobile\/initiate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/recharge\/mobile\/initiate"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mobile_no\":\"9876543210\",\"operator_code\":\"VODA\",\"amount\":199,\"payment_method\":\"ewallet\"}"
+                        },
+                        "description": "Initiates a mobile recharge for the given mobile number and operator."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n \"message\": \"Recharge initiated\",\n \"transaction\": {\n   \"transaction_id\": \"RCH202501011234560001\",\n   \"status\": \"pending\",\n   \"amount\": 199,\n   \"operator_code\": \"VODA\",\n   \"mobile_no\": \"9876543210\"\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Check Mobile Recharge Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/recharge\/mobile\/status\/:transaction_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/recharge\/mobile\/status\/:transaction_id",
+                            "variable": [
+                                {
+                                    "id": "transaction_id",
+                                    "key": "transaction_id",
+                                    "value": "RCH202501011234560001",
+                                    "description": "The transaction id to check."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"transaction\": {\n   \"transaction_id\": \"RCH202501011234560001\",\n   \"status\": \"pending\",\n   \"amount\": 199,\n   \"recharge_no\": \"9876543210\"\n }\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Notifications",
+            "description": "",
+            "item": [
+                {
+                    "name": "List sent notifications.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications",
+                            "query": [
+                                {
+                                    "key": "send_to",
+                                    "value": "",
+                                    "description": "Filter by audience. Allowed: ecard, ecard_seva, vendor.",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "20",
+                                    "description": "Limit number of items returned. Defaults to 20.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications?send_to=&limit=20"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"message\": \"Notifications fetched.\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"send_to\": \"ecard\",\n      \"title\": \"Welcome\",\n      \"description\": \"Hello world\",\n      \"image_url\": \"http:\/\/localhost\/storage\/notifications\/sample.jpg\",\n      \"sent_at\": \"2025-11-05T19:20:00Z\"\n    }\n  ]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get notification details.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/notifications\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/notifications\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "17",
+                                    "description": "The notification ID."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"message\": \"Notification fetched.\",\n  \"data\": {\n    \"id\": 1,\n    \"send_to\": \"ecard\",\n    \"title\": \"Welcome\",\n    \"description\": \"Hello world\",\n    \"image_url\": \"http:\/\/localhost\/storage\/notifications\/sample.jpg\",\n    \"sent_at\": \"2025-11-05T19:20:00Z\"\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"success\": false, \"message\": \"Notification not found\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Payments",
+            "description": "",
+            "item": [
+                {
+                    "name": "Payments\nRetrieve current payment enablement flags.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/payment-settings",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/payment-settings"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns the boolean status for e-card, e-wallet, and e-QR payments.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"ecard_payment_enabled\": true, \"ewallet_payment_enabled\": false, \"eqr_payment_enabled\": true}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Payment sharing percentages\nGet the current percentage split across e-card, e-wallet, and e-QR.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/payment-settings\/sharing",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/payment-settings\/sharing"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"ecard_share_percent\": 50.0, \"ewallet_share_percent\": 30.0, \"eqr_share_percent\": 20.0, \"total\": 100.0}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Calculate payment sharing for an amount\nGiven an `amount`, returns how it splits across e-card, e-wallet, and e-QR based on current percentages.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/payment-settings\/sharing\/calculate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/payment-settings\/sharing\/calculate"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"amount\":1000}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"amount\":1000,\"shares\":{\"ecard\":500,\"ewallet\":300,\"eqr\":200},\"percentages\":{\"ecard\":50,\"ewallet\":30,\"eqr\":20},\"total\":1000}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update e-card payment status\nToggle e-card payments on or off.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/payment-settings\/ecard",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/payment-settings\/ecard"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":true}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"ecard_payment_enabled\": true}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update e-wallet payment status\nToggle e-wallet payments on or off.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/payment-settings\/ewallet",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/payment-settings\/ewallet"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":false}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"ewallet_payment_enabled\": false}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update e-QR payment status\nToggle e-QR payments on or off.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/payment-settings\/eqr",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/payment-settings\/eqr"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"status\":true}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"eqr_payment_enabled\": true}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update payment sharing percentages\nSet percentages across e-card, e-wallet, and e-QR (must sum to 100).",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/payment-settings\/sharing",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/payment-settings\/sharing"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"ecard_share_percent\":50,\"ewallet_share_percent\":30,\"eqr_share_percent\":20}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"ecard_share_percent\": 50.0, \"ewallet_share_percent\": 30.0, \"eqr_share_percent\": 20.0, \"total\": 100.0}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Registration",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET api\/v1\/auth\/registration-profile",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/registration-profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/registration-profile"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"Registration profile retrieved successfully\",\"data\":{\"user_id\":\"UP12345678\",\"department_level\":\"customer\",\"first_name\":\"John\",\"last_name\":\"Customer\",\"email_id\":\"customer@example.com\",\"mobile_no\":\"+1234567890\",\"profile_image_url\":\"\/storage\/profile_images\/abc123.jpg\"}}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\"success\":false,\"message\":\"Only customers can access this endpoint\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\"success\":false,\"message\":\"Registration record not found\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/v1\/auth\/registration-profile",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/registration-profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/registration-profile"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"department_level\":\"consequatur\",\"first_name\":\"consequatur\",\"date_of_birth\":\"consequatur\",\"current_address\":\"consequatur\",\"permanent_address\":\"consequatur\",\"nationality\":\"consequatur\",\"state\":\"consequatur\",\"district\":\"consequatur\",\"city\":\"consequatur\",\"pin_code\":\"consequatur\",\"mobile_no\":\"consequatur\",\"email_id\":\"consequatur\",\"gmail_id\":\"consequatur\",\"live_location_map\":\"consequatur\",\"aadhaar_no\":\"consequatur\",\"otp_required\":false,\"otp_verified\":false,\"middle_name\":\"consequatur\",\"last_name\":\"consequatur\",\"father_name\":\"consequatur\",\"mother_name\":\"consequatur\",\"blood_group\":\"consequatur\",\"gender\":\"consequatur\",\"marital_status\":\"consequatur\",\"phone_no\":\"consequatur\",\"last_qualification\":\"consequatur\",\"work_type\":\"consequatur\",\"work_experience\":\"consequatur\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"Registration profile updated successfully\",\"data\":{}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/v1\/auth\/registration-profile\/image",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/registration-profile\/image",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/registration-profile\/image"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "image",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"Profile image updated successfully\",\"data\":{\"profile_image_url\":\"\/storage\/profile_images\/abc123.jpg\",\"uploaded\":true}}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"success\":false,\"message\":\"Validation failed\",\"errors\":{\"image\":[\"The image field is required.\"]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Generate QR",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/my-qr\/generate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/my-qr\/generate"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Fetch QR",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/my-qr",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/my-qr"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Third Party Verification",
+            "description": "",
+            "item": [
+                {
+                    "name": "Operator fetch via third-party API.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/verification\/operator-fetch",
+                            "query": [
+                                {
+                                    "key": "mobile",
+                                    "value": "9876543210.",
+                                    "description": "The 10-digit mobile number.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/verification\/operator-fetch?mobile=9876543210."
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mobile\":\"8107987494\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"order_id\": \"1234567890\",\n  \"data\": {\"operator\": \"SampleOperator\", \"circle\": \"SampleCircle\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"success\": false, \"message\": \"Invalid mobile number.\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\"success\": false, \"message\": \"Upstream request failed.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Operator fetch via third-party API.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/verification\/operator-find",
+                            "query": [
+                                {
+                                    "key": "mobile",
+                                    "value": "9876543210.",
+                                    "description": "The 10-digit mobile number.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/verification\/operator-find?mobile=9876543210."
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mobile\":\"8107987494\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"order_id\": \"1234567890\",\n  \"data\": {\"operator\": \"SampleOperator\", \"circle\": \"SampleCircle\"}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"success\": false, \"message\": \"Invalid mobile number.\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\"success\": false, \"message\": \"Upstream request failed.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Operator plan fetch via third-party API.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/verification\/operator-plan-fetch",
+                            "query": [
+                                {
+                                    "key": "mobile",
+                                    "value": "9876543210.",
+                                    "description": "The 10-digit mobile number.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "opcode",
+                                    "value": "VODA.",
+                                    "description": "The operator code obtained from operator-find endpoint.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "circle",
+                                    "value": "DEL.",
+                                    "description": "The circle code obtained from operator-find endpoint.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "order_id",
+                                    "value": "consequatur",
+                                    "description": "The 10-digit order ID. If not provided, a random 10-digit ID will be generated.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/verification\/operator-plan-fetch?mobile=9876543210.&opcode=VODA.&circle=DEL.&order_id=consequatur"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mobile\":\"8107987494\",\"opcode\":\"consequatur\",\"circle\":\"consequatur\",\"order_id\":\"8107987494\"}"
+                        },
+                        "description": "Calls upstream `{baseUrl}\/verification\/operator_plan_fetch` with credentials\nand the provided `mobile`, `opcode`, and `circle`.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"order_id\": \"1234567890\",\n  \"data\": {\"plans\": []}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"success\": false, \"message\": \"Validation error.\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\"success\": false, \"message\": \"Upstream request failed.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Operator plan fetch via third-party API.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/verification\/operator_plan_fetch",
+                            "query": [
+                                {
+                                    "key": "mobile",
+                                    "value": "9876543210.",
+                                    "description": "The 10-digit mobile number.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "opcode",
+                                    "value": "VODA.",
+                                    "description": "The operator code obtained from operator-find endpoint.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "circle",
+                                    "value": "DEL.",
+                                    "description": "The circle code obtained from operator-find endpoint.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "order_id",
+                                    "value": "consequatur",
+                                    "description": "The 10-digit order ID. If not provided, a random 10-digit ID will be generated.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/verification\/operator_plan_fetch?mobile=9876543210.&opcode=VODA.&circle=DEL.&order_id=consequatur"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mobile\":\"8107987494\",\"opcode\":\"consequatur\",\"circle\":\"consequatur\",\"order_id\":\"8107987494\"}"
+                        },
+                        "description": "Calls upstream `{baseUrl}\/verification\/operator_plan_fetch` with credentials\nand the provided `mobile`, `opcode`, and `circle`.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"order_id\": \"1234567890\",\n  \"data\": {\"plans\": []}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\"success\": false, \"message\": \"Validation error.\"}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 500,
+                            "body": "{\"success\": false, \"message\": \"Upstream request failed.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Wallet",
+            "description": "",
+            "item": [
+                {
+                    "name": "Fetch Wallet Balance",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/wallet\/balance",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/wallet\/balance"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List Wallet Transactions",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/wallet\/transactions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/wallet\/transactions"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Wallet Transaction (Credit\/Debit)",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/wallet\/transactions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/wallet\/transactions"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"type\":\"add\",\"amount\":73,\"narration\":\"mqeopfuudtdsufvyvddqa\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add Wallet Balance (Convenience)",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/wallet\/balance\/add",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/wallet\/balance\/add"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add funds to user wallet via active payment gateway\n\nThis endpoint credits a user's wallet by the specified amount, attributing\nthe transaction to the currently active payment gateway (eg. PhonePe or Cashfree).\nIt records a credit note on the wallet transaction for audit purposes.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/auth\/wallet\/topup",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/auth\/wallet\/topup"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"registration_id\":12,\"amount\":250.5,\"note\":\"\\\"Manual top-up\\\"\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"success\": true,\n  \"message\": \"Wallet topped up successfully\",\n  \"data\": {\n    \"transaction\": {\n      \"id\": 101,\n      \"registration_id\": 12,\n      \"transaction_type\": \"add\",\n      \"amount\": \"250.50\",\n      \"previous_balance\": \"1000.00\",\n      \"new_balance\": \"1250.50\",\n      \"narration\": \"Wallet top-up\",\n      \"credit_note\": \"Top-up via PhonePe (test)\",\n      \"debit_note\": null\n    }\n  }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\"success\": false, \"message\": \"No active payment gateway configured\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}

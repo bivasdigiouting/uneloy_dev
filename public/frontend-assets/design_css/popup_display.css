@@ -1,0 +1,40 @@
+/*popup display*/
+.bg_overlay {
+	width: 100%;
+	background: rgba(0, 0, 0, 0.4);
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	z-index: 999999999;
+}
+.bg_content {
+	position: fixed;
+	width: 90%;
+	display: table;
+	z-index: 99999999;
+	max-width: 800px;
+	margin-right: -50%;
+	top: 50%;
+	left: 50%;
+	margin-bottom: -50%;
+	transform: translate(-50%, -50%);
+}
+.bg_content img {
+	width:100%;
+}
+.pclose {
+	background: #e5511e;
+	color: #fff!important;
+	padding: 2px 10px;
+	top: 0px;
+	right:0px;
+	display: block;
+	position: absolute;
+	cursor: pointer;
+	font-size:13px;
+}
+.pclose:hover {
+	color:  #000!important;
+}
