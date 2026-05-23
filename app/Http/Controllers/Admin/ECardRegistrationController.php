@@ -17,7 +17,11 @@ class ECardRegistrationController extends Controller
      */
     public function index()
     {
-        $registrations = ECardRegistration::latest()->paginate(10);
+        $perPage = (int) request()->query('per_page', 25);
+        $perPage = max(10, min(100, $perPage));
+
+        $registrations = ECardRegistration::latest()->paginate($perPage)->withQueryString();
+
 
         return view('admin.ecard-registrations.index', compact('registrations'));
     }
@@ -422,7 +426,7 @@ class ECardRegistrationController extends Controller
         ]);
 
         $registration = ECardRegistration::findOrFail($id);
-        
+
         $registration->kyc_status = $request->input('status');
         $registration->save();
 

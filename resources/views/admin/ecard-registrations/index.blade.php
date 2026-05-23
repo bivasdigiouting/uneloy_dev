@@ -268,12 +268,14 @@
     // Initialize DataTable
     $(document).ready(function() {
         console.log('Initializing DataTable for E-Card registrations...');
-        
+
         try {
             // Only initialize DataTable if there is at least one data row
             @if($registrations->count() > 0)
+
                 var table = $('#ecard-registrations-table').DataTable({
-                    pageLength: 10,
+                    pageLength: 25,
+
                     lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
                     order: [[1, 'asc']],
                     columnDefs: [
@@ -300,7 +302,7 @@
     function deleteRegistration(registrationId) {
         const deleteForm = document.getElementById('deleteForm');
         deleteForm.action = `{{ url('admin/ecard-registrations') }}/${registrationId}`;
-        
+
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         deleteModal.show();
     }
