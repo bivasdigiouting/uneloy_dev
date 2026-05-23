@@ -25,77 +25,138 @@
                     <form action="{{ route('admin.payroll.credits.store') }}" method="POST" id="salaryCreditForm">
                         @csrf
 
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>Department</label>
-                                <form action="{{ route('admin.payroll.credits.create') }}" method="GET" id="deptReloadForm"></form>
-                                <select name="department_id" class="form-control select2" required form="salaryCreditForm" onchange="reloadWithDepartment(this.value)">
-                                    <option value="">Select Department</option>
-                                    @foreach($departments as $dept)
-                                        <option value="{{ $dept->id }}" {{ ($selectedDepartment == $dept->id) ? 'selected' : '' }}>{{ $dept->department_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('department_id')<small class="text-danger">{{ $message }}</small>@enderror
+                        {{-- Header fields --}}
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label class="form-label">Department <span class="text-danger">*</span></label>
+                                    <select name="department_id" class="form-control select2" required onchange="reloadWithDepartment(this.value)">
+                                        <option value="">Select Department</option>
+                                        @foreach($departments as $dept)
+                                            <option value="{{ $dept->id }}" {{ ($selectedDepartment == $dept->id) ? 'selected' : '' }}>{{ $dept->department_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('department_id')<div class="text-danger small">{{ $message }}</div>@enderror
+                                </div>
                             </div>
-                            <div class="form-group col-md-4">
-                                <label>Staff</label>
-                                <select name="staff_id" class="form-control select2" required>
-                                    <option value="">Select Staff</option>
-                                    @foreach($staff as $s)
-                                        <option value="{{ $s->id }}">{{ $s->staff_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('staff_id')<small class="text-danger">{{ $message }}</small>@enderror
+
+                            <div class="col-md-4">
+                                <div class="mb-2">
+                                    <label class="form-label">Staff <span class="text-danger">*</span></label>
+                                    <select name="staff_id" class="form-control select2" required>
+                                        <option value="">Select Staff</option>
+                                        @foreach($staff as $s)
+                                            <option value="{{ $s->id }}">{{ $s->staff_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('staff_id')<div class="text-danger small">{{ $message }}</div>@enderror
+                                </div>
                             </div>
-                            <div class="form-group col-md-2">
-                                <label>Month</label>
-                                <select name="month" class="form-control select2" required>
-                                    @for($m=1;$m<=12;$m++)
-                                        <option value="{{ $m }}" {{ (int)date('n') === $m ? 'selected' : '' }}>{{ date('F', mktime(0,0,0,$m,1)) }}</option>
-                                    @endfor
-                                </select>
-                                @error('month')<small class="text-danger">{{ $message }}</small>@enderror
+
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <label class="form-label">Month <span class="text-danger">*</span></label>
+                                    <select name="month" class="form-control select2" required>
+                                        @for($m=1;$m<=12;$m++)
+                                            <option value="{{ $m }}" {{ (int)date('n') === $m ? 'selected' : '' }}>{{ date('F', mktime(0,0,0,$m,1)) }}</option>
+                                        @endfor
+                                    </select>
+                                    @error('month')<div class="text-danger small">{{ $message }}</div>@enderror
+                                </div>
                             </div>
-                            <div class="form-group col-md-2">
-                                <label>Year</label>
-                                <input type="number" name="year" class="form-control" value="{{ date('Y') }}" required>
-                                @error('year')<small class="text-danger">{{ $message }}</small>@enderror
+
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <label class="form-label">Year <span class="text-danger">*</span></label>
+                                    <input type="number" name="year" class="form-control" value="{{ date('Y') }}" required>
+                                    @error('year')<div class="text-danger small">{{ $message }}</div>@enderror
+                                </div>
                             </div>
                         </div>
 
+                        {{-- Earnings & Deductions --}}
                         <div class="row">
                             <div class="col-md-6">
-                                <h5>Earnings</h5>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6"><label>Basic</label><input type="number" step="0.01" name="basic" id="earn_basic" class="form-control validate-number" data-required="true" value="{{ $structure->basic ?? 0 }}" required>@error('basic')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                    <div class="form-group col-md-6"><label>HRA</label><input type="number" step="0.01" name="hra" id="earn_hra" class="form-control validate-number" value="{{ $structure->hra ?? 0 }}">@error('hra')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6"><label>DA</label><input type="number" step="0.01" name="da" id="earn_da" class="form-control validate-number" value="{{ $structure->da ?? 0 }}">@error('da')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                    <div class="form-group col-md-6"><label>TA</label><input type="number" step="0.01" name="ta" id="earn_ta" class="form-control validate-number" value="{{ $structure->ta ?? 0 }}">@error('ta')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6"><label>Medical</label><input type="number" step="0.01" name="medical" id="earn_medical" class="form-control validate-number" value="{{ $structure->medical ?? 0 }}">@error('medical')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                    <div class="form-group col-md-6"><label>Special Allowance</label><input type="number" step="0.01" name="special_allowance" id="earn_sa" class="form-control validate-number" value="{{ $structure->special_allowance ?? 0 }}">@error('special_allowance')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6"><label>Bonus</label><input type="number" step="0.01" name="bonus" id="earn_bonus" class="form-control validate-number" value="{{ $structure->bonus ?? 0 }}">@error('bonus')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                    <div class="form-group col-md-6"><label>EIC</label><input type="number" step="0.01" name="eic" id="earn_eic" class="form-control validate-number" value="{{ $structure->eic ?? 0 }}">@error('eic')<small class="text-danger">{{ $message }}</small>@enderror</div>
+                                <div class="border rounded p-3 h-100">
+                                    <h5 class="mb-3">Earnings</h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Basic <span class="text-danger">*</span></label>
+                                            <input type="number" step="0.01" name="basic" id="earn_basic" class="form-control validate-number" data-required="true" value="{{ $structure->basic ?? 0 }}" required>
+                                            @error('basic')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">HRA</label>
+                                            <input type="number" step="0.01" name="hra" id="earn_hra" class="form-control validate-number" value="{{ $structure->hra ?? 0 }}">
+                                            @error('hra')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">DA</label>
+                                            <input type="number" step="0.01" name="da" id="earn_da" class="form-control validate-number" value="{{ $structure->da ?? 0 }}">
+                                            @error('da')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">TA</label>
+                                            <input type="number" step="0.01" name="ta" id="earn_ta" class="form-control validate-number" value="{{ $structure->ta ?? 0 }}">
+                                            @error('ta')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Medical</label>
+                                            <input type="number" step="0.01" name="medical" id="earn_medical" class="form-control validate-number" value="{{ $structure->medical ?? 0 }}">
+                                            @error('medical')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Special Allowance</label>
+                                            <input type="number" step="0.01" name="special_allowance" id="earn_sa" class="form-control validate-number" value="{{ $structure->special_allowance ?? 0 }}">
+                                            @error('special_allowance')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Bonus</label>
+                                            <input type="number" step="0.01" name="bonus" id="earn_bonus" class="form-control validate-number" value="{{ $structure->bonus ?? 0 }}">
+                                            @error('bonus')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">EIC</label>
+                                            <input type="number" step="0.01" name="eic" id="earn_eic" class="form-control validate-number" value="{{ $structure->eic ?? 0 }}">
+                                            @error('eic')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
-                                <h5>Deductions</h5>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6"><label>PF</label><input type="number" step="0.01" name="pf" id="ded_pf" class="form-control validate-number" value="{{ $structure->pf ?? 0 }}">@error('pf')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                    <div class="form-group col-md-6"><label>Loan</label><input type="number" step="0.01" name="loan" id="ded_loan" class="form-control validate-number" value="{{ $structure->loan ?? 0 }}">@error('loan')<small class="text-danger">{{ $message }}</small>@enderror</div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6"><label>ESIC</label><input type="number" step="0.01" name="esic" id="ded_esic" class="form-control validate-number" value="{{ $structure->esic ?? 0 }}">@error('esic')<small class="text-danger">{{ $message }}</small>@enderror</div>
+                                <div class="border rounded p-3 h-100">
+                                    <h5 class="mb-3">Deductions</h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">PF</label>
+                                            <input type="number" step="0.01" name="pf" id="ded_pf" class="form-control validate-number" value="{{ $structure->pf ?? 0 }}">
+                                            @error('pf')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Loan</label>
+                                            <input type="number" step="0.01" name="loan" id="ded_loan" class="form-control validate-number" value="{{ $structure->loan ?? 0 }}">
+                                            @error('loan')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">ESIC</label>
+                                            <input type="number" step="0.01" name="esic" id="ded_esic" class="form-control validate-number" value="{{ $structure->esic ?? 0 }}">
+                                            @error('esic')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="alert alert-info">
+                        {{-- Totals --}}
+                        <div class="alert alert-info mt-3 mb-3">
                             <strong>Totals:</strong>
                             <span id="grossTotal">Gross: 0.00</span> |
                             <span id="deductionTotal">Deductions: 0.00</span> |
