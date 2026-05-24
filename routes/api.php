@@ -27,7 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // ECard API Routes
 Route::prefix('ecard')->group(function () {
-    Route::post('/login', [AuthController::class, 'login']);
+    // CSRF mismatch fix: login endpoint is stateless and should not depend on cookie-based CSRF.
+    Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware(['web']);
+
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);

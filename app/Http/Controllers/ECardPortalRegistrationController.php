@@ -101,7 +101,9 @@ class ECardPortalRegistrationController extends Controller
             'last_name' => 'required|string|max:100',
             'father_name' => 'nullable|string|max:150',
             'mother_name' => 'nullable|string|max:150',
-            'blood_group' => 'required|string',
+
+            'blood_group' => 'nullable|string',
+            'cadr_number' => 'nullable|digits:16',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:Male,Fe-Male,Others,Male,Female,Other',
             'marital_status' => 'nullable|in:Single,Married,Other,Divorced,Widowed',
@@ -139,10 +141,8 @@ class ECardPortalRegistrationController extends Controller
             'city_other' => 'nullable|required_if:city_id,'.self::OTHER_OPTION_VALUE.'|string|max:255',
             'pin_code' => 'required|string|max:10',
             'mobile_no' => 'required|string|min:10|max:20',
-            'phone_no' => 'nullable|string|max:20',
-            'email_id' => 'required|email',
+'email_id' => 'required|email',
             'gmail_id' => 'nullable|email',
-            'live_location_map' => 'required|string',
 
             // Bank
             'ifsc_code' => 'nullable|string|max:20',
@@ -288,11 +288,14 @@ class ECardPortalRegistrationController extends Controller
             'district' => $district->district_name,
             'city' => $city->city_name,
             'pin_code' => $request->pin_code,
-            'mobile_no' => $request->mobile_no,
-            'phone_no' => $request->phone_no,
-            'email_id' => $request->email_id,
+'mobile_no' => $request->mobile_no,
+            'cadr_number' => $request->input('cadr_number'),
+				// phone_no removed for e-card seva
+'phone_no' => null,
+'email_id' => $request->email_id,
             'gmail_id' => $request->gmail_id,
-            'live_location_map' => $request->live_location_map,
+				// live_location_map removed for e-card seva
+            'live_location_map' => null,
 
             // Bank
             'ifsc_code' => $request->ifsc_code,
@@ -417,7 +420,7 @@ class ECardPortalRegistrationController extends Controller
                     // For paid users, redirect to payment selection page
                     session()->put('registration_plan_' . $registration->id, $selectedPlanId);
                     session()->put('registration_password_' . $registration->id, $passwordPlain);
-                    
+
                     return redirect()->route('ecard.registration.payment', ['id' => $registration->id]);
                 });
 
@@ -442,11 +445,11 @@ class ECardPortalRegistrationController extends Controller
 
             // Handle multiple KYC documents
             $kycFields = [
-                'aadhaar_front', 'aadhaar_back', 'pan_card', 'cheque_book', 
-                'business_document', 'gst_document', 'business_photo', 
+                'aadhaar_front', 'aadhaar_back', 'pan_card', 'cheque_book',
+                'business_document', 'gst_document', 'business_photo',
                 'signature', 'user_photo'
             ];
-            
+
             $kycDocumentsUploaded = false;
             foreach ($kycFields as $field) {
                 if ($request->hasFile($field)) {
@@ -454,7 +457,7 @@ class ECardPortalRegistrationController extends Controller
                     $kycDocumentsUploaded = true;
                 }
             }
-            
+
             if ($kycDocumentsUploaded) {
                 $payload['kyc_status'] = 'pending';
             }
@@ -917,17 +920,17 @@ class ECardPortalRegistrationController extends Controller
     {
         $registration = Registration::findOrFail($id);
         $planId = session('registration_plan_' . $id);
-        
+
         if (!$planId) {
             return redirect()->route('ecard.users.my')->with('error', 'No plan selected or session expired.');
         }
-        
+
         $plan = FirstRechargePlan::findOrFail($planId);
         $user = Auth::guard('ecard')->user();
-        
+
         // Fetch active payment gateways
         $gateways = PaymentGateway::where('is_enabled', true)->get();
-        
+
         return view('ecard.registration.payment_selection', compact('registration', 'plan', 'user', 'gateways'));
     }
 
@@ -936,28 +939,28 @@ class ECardPortalRegistrationController extends Controller
         $registration = Registration::findOrFail($id);
         $planId = session('registration_plan_' . $id);
         $passwordPlain = session('registration_password_' . $id);
-        
+
         if (!$planId) {
             return redirect()->route('ecard.users.my')->with('error', 'Session expired. Please try again.');
         }
-        
+
         $plan = FirstRechargePlan::findOrFail($planId);
         $planValue = (float) $plan->plan_value;
         $bonusValue = (float) $plan->bonus_value;
         $totalCredit = $planValue + $bonusValue;
-        
+
         $registeringUser = ECardRegistration::findOrFail(Auth::guard('ecard')->id());
-        
+
         if ($registeringUser->wallet_balance < $planValue) {
             return back()->with('error', 'Insufficient wallet balance.');
         }
-        
+
         try {
             DB::transaction(function () use ($registeringUser, $registration, $plan, $planValue, $bonusValue, $totalCredit, $passwordPlain, $id) {
                 // Deduct from parent
                 $registeringUser->decrement('wallet_balance', $planValue);
                 $registeringUser->refresh(); // Refresh to get updated balance
-                
+
                 ECardWalletTransaction::create([
                     'ecard_registration_id' => $registeringUser->id,
                     'transaction_type' => 'remove',
@@ -969,15 +972,15 @@ class ECardPortalRegistrationController extends Controller
                     'reference_type' => 'first_recharge_plan',
                     'reference_id' => $plan->id,
                 ]);
-                
+
                 $this->completeRegistrationSuccess($registration, $plan, $planValue, $bonusValue, $totalCredit, $registeringUser->id, $passwordPlain);
             });
-            
+
             session()->forget('registration_password_' . $id);
             session()->forget('registration_plan_' . $id);
-            
+
             return redirect()->route('ecard.users.my')->with('success', 'Payment successful! Registration completed.');
-            
+
         } catch (\Exception $e) {
             return back()->with('error', 'Payment failed: ' . $e->getMessage());
         }
@@ -987,13 +990,13 @@ class ECardPortalRegistrationController extends Controller
     {
         $registration = Registration::findOrFail($id);
         $planId = session('registration_plan_' . $id);
-        
+
         if (!$planId) {
              return redirect()->route('ecard.users.my')->with('error', 'Session expired.');
         }
 
         $plan = FirstRechargePlan::findOrFail($planId);
-        
+
         $gatewayId = $request->input('gateway_id');
         if (!$gatewayId) {
             return back()->with('error', 'Please select a payment gateway.');
@@ -1006,7 +1009,7 @@ class ECardPortalRegistrationController extends Controller
         } elseif ($gateway->slug === 'cashfree') {
             return $this->initiateCashfreePayment($gateway, $registration, $plan);
         }
-        
+
         return back()->with('error', 'Selected gateway is not supported yet.');
     }
 
@@ -1027,7 +1030,7 @@ class ECardPortalRegistrationController extends Controller
 
         $orderId = 'REG_' . $registration->id . '_' . $plan->id . '_' . time();
         $returnUrl = route('ecard.registration.payment.callback') . '?order_id={order_id}';
-        
+
         $payload = [
             'order_id' => $orderId,
             'order_amount' => (float) $plan->plan_value,
@@ -1056,34 +1059,34 @@ class ECardPortalRegistrationController extends Controller
             if ($response->successful() && isset($resData['payment_session_id'])) {
                  // For standard checkout, redirect to payment link if available, or use session_id with JS.
                  // The 'payment_link' field is sometimes present or we might need to construct it.
-                 // However, Cashfree recommends using their SDK. 
+                 // However, Cashfree recommends using their SDK.
                  // But for backend-only redirect, let's see if 'payment_link' is in the response.
                  // If not, we might need to render a view that auto-submits or uses JS.
                  // Let's check for 'payment_link' first.
-                 
+
                  // Note: If 'payment_link' is not available, we can fallback to a view that uses the session_id.
                  // But for simplicity, let's assume we can get a link or handle it.
                  // Actually, Cashfree's newer API might require a separate call for link or return it.
                  // Let's try to get payment_link if possible.
-                 
+
                  if (isset($resData['payment_link'])) {
                      return redirect()->away($resData['payment_link']);
                  }
-                 
+
                  // If no link, render a view to handle payment session
                  // But we don't have a view for that yet.
                  // Let's try to use the 'payment_session_id' to construct a payment link or redirect?
                  // No, you can't construct it manually.
                  // Let's try to use the 'payment_link' feature. It usually needs to be enabled in dashboard.
                  // Or we can use the 'sessions' endpoint.
-                 
+
                  // Alternative: Create a simple view 'ecard.registration.cashfree_checkout' that takes session_id and redirects using JS.
                  return view('ecard.registration.cashfree_checkout', [
                      'payment_session_id' => $resData['payment_session_id'],
                      'environment' => $env === 'LIVE' || $gateway->active_mode === 'live' ? 'production' : 'sandbox'
                  ]);
             }
-            
+
             Log::error('Cashfree Order Creation Failed', ['response' => $resData]);
             return back()->with('error', 'Failed to initiate payment: ' . ($resData['message'] ?? 'Unknown error'));
 
@@ -1120,7 +1123,7 @@ class ECardPortalRegistrationController extends Controller
         $callbackUrl = route('ecard.registration.payment.callback');
         // PhonePe expects the user to be redirected to the redirectUrl provided in the response.
         // And it will post to the redirectUrl when the user completes payment.
-        
+
         $payload = [
             'merchantId' => $merchantId,
             'merchantTransactionId' => $transactionId,
@@ -1154,7 +1157,7 @@ class ECardPortalRegistrationController extends Controller
                     return redirect()->away($redirectUrl);
                 }
             }
-            
+
             Log::error('PhonePe Payment Initiation Failed', ['response' => $resData]);
             return back()->with('error', 'Failed to initiate payment: ' . ($resData['message'] ?? 'Unknown error'));
 
@@ -1179,7 +1182,7 @@ class ECardPortalRegistrationController extends Controller
             $encodedResponse = $request->input('response');
             $responseJson = base64_decode($encodedResponse);
             $responseData = json_decode($responseJson, true);
-            
+
             if (isset($responseData['code']) && $responseData['code'] === 'PAYMENT_SUCCESS') {
                 // Verify Checksum
                 $gateway = PaymentGateway::where('slug', 'phonepe')->first();
@@ -1190,7 +1193,7 @@ class ECardPortalRegistrationController extends Controller
                     if ($saltIndex <= 0) {
                         $saltIndex = 1;
                     }
-                    
+
                     if ($saltKey) {
                         $calculatedChecksum = hash('sha256', $encodedResponse . $saltKey) . '###' . $saltIndex;
                         if ($calculatedChecksum === $request->header('X-VERIFY')) {
@@ -1217,7 +1220,7 @@ class ECardPortalRegistrationController extends Controller
         // --- 2. Cashfree Callback (GET with order_id) ---
         elseif ($request->has('order_id')) {
             $orderId = $request->input('order_id');
-            
+
             // Verify with Cashfree API
             $gateway = PaymentGateway::where('slug', 'cashfree')->first();
             if ($gateway) {
@@ -1225,20 +1228,20 @@ class ECardPortalRegistrationController extends Controller
                 $appId = $config['app_id'] ?? null;
                 $secretKey = $config['secret_key'] ?? null;
                 $env = $config['environment'] ?? 'TEST';
-                
+
                 $baseUrl = ($env === 'LIVE' || $gateway->active_mode === 'live')
                     ? 'https://api.cashfree.com/pg'
                     : 'https://sandbox.cashfree.com/pg';
-                    
+
                 try {
                     $response = Http::withHeaders([
                         'x-client-id' => $appId,
                         'x-client-secret' => $secretKey,
                         'x-api-version' => '2023-08-01'
                     ])->get($baseUrl . '/orders/' . $orderId);
-                    
+
                     $resData = $response->json();
-                    
+
                     if ($response->successful() && isset($resData['order_status']) && $resData['order_status'] === 'PAID') {
                         $paymentSuccess = true;
                         $transactionId = $orderId;
@@ -1267,12 +1270,12 @@ class ECardPortalRegistrationController extends Controller
 
         $regId = $parts[1];
         $planId = $parts[2];
-        
+
         $registration = Registration::find($regId);
         if (!$registration) {
              return redirect()->route('ecard.users.my')->with('error', 'Registration not found.');
         }
-        
+
         if ($registration->status === 'approved') {
              return redirect()->route('ecard.users.my')->with('success', 'Registration already completed.');
         }
@@ -1285,7 +1288,7 @@ class ECardPortalRegistrationController extends Controller
         $planValue = (float) $plan->plan_value;
         $bonusValue = (float) $plan->bonus_value;
         $totalCredit = $planValue + $bonusValue;
-        
+
         $performerId = $registration->parent_id;
 
         // Use transaction to ensure idempotency if multiple callbacks come
@@ -1298,7 +1301,7 @@ class ECardPortalRegistrationController extends Controller
                 $passwordPlain = session('registration_password_' . $regId);
                 $this->completeRegistrationSuccess($regLocked, $plan, $planValue, $bonusValue, $totalCredit, $performerId, $passwordPlain);
             });
-            
+
             // Clear session if exists
             session()->forget('registration_plan_' . $regId);
             session()->forget('registration_password_' . $regId);
@@ -1311,11 +1314,11 @@ class ECardPortalRegistrationController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Payment Callback Error', ['error' => $e->getMessage()]);
-            
+
             if ($isS2S) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
             }
-            
+
             return redirect()->route('ecard.users.my')->with('error', 'Error completing registration: ' . $e->getMessage());
         }
     }
@@ -1339,7 +1342,7 @@ class ECardPortalRegistrationController extends Controller
         // Add defaults and wallet balance
         $ecardData['wallet_balance'] = $totalCredit;
         $ecardData['status'] = 'active'; // Activate user
-        
+
         // Create ECardRegistration
         $ecardUser = ECardRegistration::create($ecardData);
 
@@ -1348,9 +1351,9 @@ class ECardPortalRegistrationController extends Controller
             'wallet_balance' => $totalCredit,
             'status' => 'approved'
         ]);
-        
+
         // 3. Log Wallet Transactions
-        
+
         // Log for Registration (Application) History
         WalletTransaction::create([
             'registration_id' => $registration->id,
@@ -1361,7 +1364,7 @@ class ECardPortalRegistrationController extends Controller
             'narration' => "First recharge credit ({$plan->plan_name})",
             'performed_by_user_id' => null, // Set null to avoid FK error if performer is not Admin User
         ]);
-        
+
         if ($bonusValue > 0) {
             WalletTransaction::create([
                 'registration_id' => $registration->id,
@@ -1400,9 +1403,9 @@ class ECardPortalRegistrationController extends Controller
                 'reference_id' => $plan->id,
             ]);
         }
-        
+
         // Send Email
-        // If password is not provided (Gateway flow), we try to get it from session if available, 
+        // If password is not provided (Gateway flow), we try to get it from session if available,
         // or we just send the email without password if logic supports it.
         // We send email to the NEW ECardRegistration user (though email is same)
         if ($passwordPlain) {

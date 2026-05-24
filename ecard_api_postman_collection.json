@@ -41,7 +41,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"login\":\"USER123\",\"password\":\"password123\"}"
+                            "raw": "{\"login\":\"jiarulhossain78@gmail.com\",\"password\":\"12345678\"}"
                         },
                         "description": "Authenticate an ECard user using User ID, Email, or Mobile Number.",
                         "auth": {

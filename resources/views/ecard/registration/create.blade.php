@@ -1,4 +1,4 @@
-@extends('ecard.ecard')
+/./@extends('ecard.ecard')
 @section('title', 'New Registration')
 @section('content')
 <section class="content">
@@ -69,7 +69,7 @@
                                                 <option value="paid" {{ old('customer_user_type') === 'paid' ? 'selected' : '' }}>Paid User</option>
                                             </select>
                                         </div>
-                                        
+
                                         <div class="col-md-8" id="firstRechargePlanGroup" style="display:none;">
                                             <label class="form-label">First Recharge Plan *</label>
                                             <select id="firstRechargePlanSelect" name="first_recharge_plan_id" class="form-select">
@@ -90,7 +90,7 @@
                                             <div class="small mt-1 text-muted" id="firstRechargePlanSummary"></div>
                                             <div class="small mt-1 text-muted">Your Wallet Balance: ₹{{ number_format((float) ($user->wallet_balance ?? 0), 2) }}</div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -164,15 +164,22 @@
                                         <label class="form-label">Mother's Name</label>
                                         <input type="text" name="mother_name" class="form-control" value="{{ old('mother_name') }}" placeholder="Enter mother's name">
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Select Blood Group *</label>
-                                        <select name="blood_group" class="form-select" required>
+<div class="col-md-4">
+                                        <label class="form-label">Select Blood Group</label>
+                                        <select name="blood_group" class="form-select">
+
                                             <option value="">-- Select Blood Group --</option>
                                             @foreach($bloodGroups as $bg)
                                                 <option value="{{ $bg }}" {{ old('blood_group')===$bg?'selected':'' }}>{{ $bg }}</option>
                                             @endforeach
-                                        </select>
+</select>
                                     </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Cadr Number</label>
+                                        <input type="text" name="cadr_number" class="form-control" value="{{ old('cadr_number') }}" placeholder="Enter 16-digit card number" maxlength="16" pattern="\\d{16}" inputmode="numeric">
+                                    </div>
+
                                     <div class="col-md-4">
                                         <label class="form-label">Date of Birth</label>
                                         <input type="date" name="date_of_birth" class="form-control" value="{{ old('date_of_birth') }}">
@@ -312,18 +319,12 @@
                                         <label class="form-label">Mobile No. *</label>
                                         <input type="text" name="mobile_no" class="form-control" value="{{ old('mobile_no') }}" placeholder="Enter mobile number" required>
                                     </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Phone No.</label>
-                                        <input type="text" name="phone_no" class="form-control" value="{{ old('phone_no') }}" placeholder="Enter phone number">
-                                    </div>
+
                                     <div class="col-md-3">
                                         <label class="form-label">E-Mail ID *</label>
                                         <input type="email" name="email_id" class="form-control" value="{{ old('email_id') }}" placeholder="name@example.com" required>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">Live Location (Map) *</label>
-                                        <input type="text" name="live_location_map" class="form-control" value="{{ old('live_location_map') }}" placeholder="Paste Google Map link" required>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -390,7 +391,7 @@
                             <div class="col-12">
                                 <div class="card p-3">
                                     <h6 class="fw-bold mb-3"><i class="fas fa-file-alt me-2"></i>KYC Details</h6>
-                                    
+
                                     <div class="row g-3">
                                         <!-- Aadhaar Front -->
                                         <div class="col-md-4">
@@ -1122,7 +1123,7 @@
         input.addEventListener('change', function(e) {
             const previewContainer = this.parentElement.querySelector('.kyc-preview');
             if (!previewContainer) return;
-            
+
             const file = this.files[0];
             if (file) {
                 if (file.type.startsWith('image/')) {
