@@ -52,7 +52,8 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Products</p>
-                    <p class="text-3xl font-extrabold text-slate-900 mt-2">0</p>
+                    <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ $totalProducts ?? 0 }}</p>
+
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                     <i data-lucide="package" class="w-6 h-6"></i>
@@ -64,7 +65,8 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Orders</p>
-                    <p class="text-3xl font-extrabold text-slate-900 mt-2">0</p>
+                    <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ $totalOrders ?? 0 }}</p>
+
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                     <i data-lucide="shopping-cart" class="w-6 h-6"></i>
@@ -76,7 +78,8 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Pending Orders</p>
-                    <p class="text-3xl font-extrabold text-slate-900 mt-2">0</p>
+                    <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ $pendingOrders ?? 0 }}</p>
+
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
                     <i data-lucide="clock" class="w-6 h-6"></i>
@@ -88,7 +91,8 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Earnings</p>
-                    <p class="text-3xl font-extrabold text-slate-900 mt-2">₹0</p>
+                    <p class="text-3xl font-extrabold text-slate-900 mt-2">₹{{ number_format((float)($earnings ?? 0), 2) }}</p>
+
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
                     <i data-lucide="indian-rupee" class="w-6 h-6"></i>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Vendor\VendorAuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Vendor\BillingPaymentController;
 
 Route::prefix('vendor')->name('vendor.')->group(function () {
     Route::middleware('guest')->group(function () {
@@ -20,6 +21,20 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::post('/logout', [VendorAuthController::class, 'logout'])->name('logout');
 
         Route::get('/billing', [VendorAuthController::class, 'page'])->defaults('page', 'billing')->name('billing');
+        Route::post('/billing/pay', [BillingPaymentController::class, 'pay'])->name('billing.pay');
+
+        Route::get('/billing/cashfree/checkout', function () {
+            return view('vendor.billing.cashfree-checkout', [
+                'payment_session_id' => request('payment_session_id'),
+                'environment' => request('environment', 'sandbox'),
+            ]);
+        })->name('billing.cashfree.checkout');
+
+        Route::get('/billing/phonepe/checkout', function () {
+            return view('vendor.billing.phonepe-checkout');
+        })->name('billing.phonepe.checkout');
+
+
         Route::get('/products', [\App\Http\Controllers\Vendor\VendorProductController::class, 'index'])->name('products');
         Route::post('/products', [\App\Http\Controllers\Vendor\VendorProductController::class, 'store'])->name('products.store');
         Route::delete('/products/{id}', [\App\Http\Controllers\Vendor\VendorProductController::class, 'destroy'])->name('products.destroy');
@@ -38,3 +53,4 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::post('/settings', [VendorAuthController::class, 'updateSettings'])->name('settings.update');
     });
 });
+

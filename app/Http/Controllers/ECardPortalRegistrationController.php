@@ -103,7 +103,7 @@ class ECardPortalRegistrationController extends Controller
             'mother_name' => 'nullable|string|max:150',
 
             'blood_group' => 'nullable|string',
-            'cadr_number' => 'nullable|digits:16',
+            'cadr_number' => 'nullable|digits:16|nullable',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:Male,Fe-Male,Others,Male,Female,Other',
             'marital_status' => 'nullable|in:Single,Married,Other,Divorced,Widowed',
@@ -222,7 +222,19 @@ class ECardPortalRegistrationController extends Controller
             $rules['user_photo'] = 'required|' . $kycValidation;
         }
 
-        $request->validate($rules);
+        try {
+            $request->validate($rules);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Debug: log validation errors & incoming payload to figure out why portal submit is not registering.
+            Log::error('ECardPortalRegistrationController validation failed', [
+                'errors' => $e->errors(),
+                'payload_keys' => array_keys($request->all()),
+                'department_level' => $request->input('department_level'),
+                'is_customer' => $isCustomer,
+            ]);
+            throw $e;
+        }
+
 
         $state = State::find($request->state_id);
         $district = District::find($request->district_id);

@@ -177,8 +177,78 @@ class VendorAuthController extends Controller
 
         $activePage = 'Dashboard';
 
-        return view('vendor.dashboard', compact('vendor', 'activePage'));
+        // KPI metrics (DB-driven)
+        $totalProducts = \App\Models\Product::where('vendor_id', $vendor->id)->count();
+
+        // Orders: try vendor_orders, else fallback to orders/user_orders, else 0.
+        $ordersTable = null;
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('vendor_orders')) {
+                $ordersTable = 'vendor_orders';
+            } elseif (\Illuminate\Support\Facades\Schema::hasTable('orders')) {
+                $ordersTable = 'orders';
+            } elseif (\Illuminate\Support\Facades\Schema::hasTable('user_orders')) {
+                $ordersTable = 'user_orders';
+            }
+        } catch (\Throwable $e) {
+            $ordersTable = null;
+        }
+
+        $totalOrders = 0;
+        $pendingOrders = 0;
+
+        if ($ordersTable) {
+            // Detect which status column exists (common candidates)
+            $statusCol = 'status';
+            if (! \Illuminate\Support\Facades\Schema::hasColumn($ordersTable, $statusCol)) {
+                if (\Illuminate\Support\Facades\Schema::hasColumn($ordersTable, 'order_status')) {
+                    $statusCol = 'order_status';
+                } else {
+                    $statusCol = null;
+                }
+            }
+
+            $base = \Illuminate\Support\Facades\DB::table($ordersTable);
+            if (\Illuminate\Support\Facades\Schema::hasColumn($ordersTable, 'seller_id')) {
+                $base->where('seller_id', $vendor->id);
+            } elseif (\Illuminate\Support\Facades\Schema::hasColumn($ordersTable, 'vendor_id')) {
+                $base->where('vendor_id', $vendor->id);
+            }
+
+            $totalOrders = (int) ($base->count() ?? 0);
+
+            if ($statusCol) {
+                // Pending heuristics based on typical order status values.
+                $pendingOrders = (int) (\Illuminate\Support\Facades\DB::table($ordersTable)
+                    ->when(\Illuminate\Support\Facades\Schema::hasColumn($ordersTable, 'seller_id'), function ($q) use ($vendor) {
+                        $q->where('seller_id', $vendor->id);
+                    })
+                    ->when(\Illuminate\Support\Facades\Schema::hasColumn($ordersTable, 'vendor_id'), function ($q) use ($vendor) {
+                        $q->where('vendor_id', $vendor->id);
+                    })
+                    ->whereIn($statusCol, ['Pending', 'pending', 'Awaiting', 'Processing', 'processing', 'Shipped'])
+                    ->count());
+            }
+        }
+
+        // Earnings: use vendor wallet transactions (credits - debits), DB-driven.
+        $earnings = 0.0;
+        if (\Illuminate\Support\Facades\Schema::hasTable('vendor_wallet_transactions')) {
+            $earnings = (float) (\App\Models\VendorWalletTransaction::where('vendor_id', $vendor->id)
+                ->selectRaw("SUM(CASE WHEN transaction_type = 'credit' THEN amount ELSE 0 END) - SUM(CASE WHEN transaction_type = 'debit' THEN amount ELSE 0 END) as net")
+                ->value('net') ?? 0);
+        }
+
+        return view('vendor.dashboard', compact(
+            'vendor',
+            'activePage',
+            'totalProducts',
+            'totalOrders',
+            'pendingOrders',
+            'earnings'
+        ));
     }
+
 
     /**
      * Handle vendor logout
@@ -252,33 +322,92 @@ class VendorAuthController extends Controller
 
         if ($page === 'staff' && view()->exists("vendor.staff")) {
             $vendorId = $vendor->id;
-            $vendorStaffs = \App\Models\VendorStaff::where('vendor_id', $vendorId)->get();
+            // DB-driven staff list (no random/mock performance)
+            $vendorStaffs = \App\Models\VendorStaff::where('vendor_id', $vendorId)->latest()->get();
+
+            // If the staff table has performance_score / is_online columns, the blade will show them directly.
+            // Otherwise, they will appear as null/empty which is acceptable for now.
             return view("vendor.staff", compact('vendor', 'title', 'activePage', 'vendorStaffs'));
         }
+
 
         if ($page === 'reports' && view()->exists("vendor.reports")) {
             $range = request('range', 'last_30_days');
             $modifier = $range === 'this_year' ? 4 : ($range === 'last_quarter' ? 2 : 1);
 
-            // Generate some dynamic mock data for the charts since complete transaction logs aren't structured yet
+            // DB-driven reports.
+            // This repo doesn't have a dedicated vendor sales table, so we derive analytics from available DB data:
+            // - Revenue: use sum of vendor wallet credits grouped by month.
+            // - Profit: if we cannot separate profit, keep it as 0 (no mock).
+            // - Category split: derived from vendor products by category (count-based).
+
             $months = [];
             $revenueData = [];
             $profitData = [];
-            for ($i = 5; $i >= 0; $i--) {
-                $monthStr = now()->subMonths($i)->format('M Y');
-                $months[] = $monthStr;
-                $rev = rand(50000, 200000) * $modifier;
-                $revenueData[] = $rev;
-                $profitData[] = $rev * (rand(15, 30) / 100); // 15-30% profit margin
+
+            // Apply selected range to chart aggregation.
+            // We keep MONTH buckets to match the blade layout.
+            $range = (string) $range;
+            $rangeMonths = match ($range) {
+                'last_30_days' => 1,   // last 30 days -> show last 1 month bucket
+                'last_quarter' => 3,   // last 3 months
+                'this_year' => 6,      // UI says last 6 months; keep it consistent
+                default => 6,
+            };
+
+            // Build buckets: last N months inclusive (e.g., 6 => 6 buckets)
+            for ($i = $rangeMonths - 1; $i >= 0; $i--) {
+                $monthStart = now()->subMonths($i)->startOfMonth();
+                $months[] = $monthStart->format('M Y');
+                $revenueData[] = 0;
+                $profitData[] = 0;
             }
 
-            $categories = ['Beverages', 'Produce', 'Bakery', 'Pantry'];
+            if (\Illuminate\Support\Facades\Schema::hasTable('vendor_wallet_transactions')) {
+                for ($i = $rangeMonths - 1; $i >= 0; $i--) {
+                    $monthStart = now()->subMonths($i)->startOfMonth();
+                    $monthEnd = $monthStart->copy()->endOfMonth();
+
+                    $sum = \App\Models\VendorWalletTransaction::query()
+                        ->where('vendor_id', $vendor->id)
+                        ->where('transaction_type', 'credit')
+                        ->whereBetween('created_at', [$monthStart, $monthEnd])
+                        ->sum('amount');
+
+                    $idx = ($rangeMonths - 1) - $i;
+                    $revenueData[$idx] = (float) $sum;
+                    // Profit not available => 0
+                    $profitData[$idx] = 0;
+                }
+            }
+
+
+            // Category split based on product counts in each category
+            $categoryRows = \App\Models\Product::query()
+                ->where('vendor_id', $vendor->id)
+                ->when(\Illuminate\Support\Facades\Schema::hasColumn('products', 'category'), function ($q) {
+                    $q->whereNotNull('category');
+                })
+                ->groupBy('category')
+                ->selectRaw('category, COUNT(*) as cnt')
+                ->get();
+
+            $categories = [];
             $categoryData = [];
             $totalSalesCount = 0;
-            foreach($categories as $cat) {
-                $val = rand(100, 500) * $modifier;
-                $categoryData[] = $val;
-                $totalSalesCount += $val;
+
+            if ($categoryRows && $categoryRows->count() > 0) {
+                foreach ($categoryRows as $row) {
+                    $cat = $row->category ?? 'Uncategorized';
+                    $categories[] = $cat;
+                    $categoryData[] = (int) $row->cnt;
+                    $totalSalesCount += (int) $row->cnt;
+                }
+            } else {
+                // Keep empty state without mock values
+                $categories = [];
+                $categoryData = [];
+                $totalSalesCount = 0;
             }
 
             $chartData = [
@@ -287,22 +416,25 @@ class VendorAuthController extends Controller
                 'profit' => $profitData,
                 'categories' => $categories,
                 'categoryData' => $categoryData,
-                'totalSalesCount' => $totalSalesCount
+                'totalSalesCount' => $totalSalesCount,
             ];
+
 
             return view("vendor.reports", compact('vendor', 'title', 'activePage', 'chartData'));
         }
 
         if ($page === 'payroll' && view()->exists("vendor.payroll")) {
             $vendorId = $vendor->id;
-            
+
             $vendorStaffs = \App\Models\VendorStaff::where('vendor_id', $vendorId)->get();
             $currentMonth = now()->startOfMonth();
-            
+
             $payrolls = \App\Models\VendorPayroll::where('vendor_id', $vendorId)
                             ->where('month_year', $currentMonth->format('Y-m-d'))
                             ->get();
-            
+
+            // Ensure payroll rows exist for each staff for the current month.
+            // Keep it DB-driven: do NOT generate random incentives.
             foreach($vendorStaffs as $staff) {
                 if(!$payrolls->contains('vendor_staff_id', $staff->id)) {
                     $newPayroll = \App\Models\VendorPayroll::create([
@@ -310,78 +442,106 @@ class VendorAuthController extends Controller
                         'vendor_staff_id' => $staff->id,
                         'month_year' => $currentMonth->format('Y-m-d'),
                         'base_salary' => $staff->base_salary,
-                        'incentive' => rand(1000, 5000), // Mock incentive logic 
+                        'incentive' => 0,
                         'status' => 'pending'
                     ]);
                     $payrolls->push($newPayroll);
                 }
             }
 
+
             $totalBasePaid = \App\Models\VendorPayroll::where('vendor_id', $vendorId)
                                     ->where('status', 'paid')
                                     ->sum('base_salary');
-                                    
+
             $totalIncentivePaid = \App\Models\VendorPayroll::where('vendor_id', $vendorId)
                                     ->where('status', 'paid')
                                     ->sum('incentive');
-                                    
+
             $totalDisbursement = $totalBasePaid + $totalIncentivePaid;
 
             $pendingQueue = $payrolls->where('status', 'pending');
 
             return view("vendor.payroll", compact(
-                'vendor', 'title', 'activePage', 'payrolls', 'vendorStaffs', 
+                'vendor', 'title', 'activePage', 'payrolls', 'vendorStaffs',
                 'totalDisbursement', 'totalBasePaid', 'totalIncentivePaid', 'pendingQueue', 'currentMonth'
             ));
         }
 
         if ($page === 'billing' && view()->exists("vendor.billing")) {
-            $products = \App\Models\Product::active()->approved()->get();
+            $vendorId = $vendor->id;
+
+            // Dynamic: show only products belonging to this vendor.
+            // Keep approved/active filter if those columns exist.
+            $productsQuery = \App\Models\Product::where('vendor_id', $vendorId);
+
+            // These scopes exist in Product model; safe to call.
+            $productsQuery->active()->approved();
+
+            $products = $productsQuery->latest()->get();
+
             return view("vendor.billing", compact('vendor', 'title', 'activePage', 'products'));
         }
 
+
         if ($page === 'inventory' && view()->exists("vendor.inventory")) {
             $vendorId = $vendor->id;
+
+            // Dynamic inventory metrics from DB.
+            // Note: there is no dedicated sales/stock-movement table used elsewhere,
+            // so we derive approximate metrics directly from current stock.
             $totalItems = \App\Models\Product::where('vendor_id', $vendorId)->sum('stock');
             $newToday = \App\Models\Product::where('vendor_id', $vendorId)->whereDate('created_at', today())->count();
-            
-            // Mocking dynamic external analytics if explicit tracking models aren't present yet
-            $soldStock = 412;
-            $soldAvg = 58;
-            $inbound = 45000;
-            $inboundDeliveries = 3;
+
+            $lowStockCount = \App\Models\Product::where('vendor_id', $vendorId)
+                ->where('stock', '<=', 20)
+                ->count();
+
+            // Approximation placeholders based on DB only (no mock random numbers)
+            $soldStock = 0;
+            $soldAvg = 0;
+            $inbound = 0;
+            $inboundDeliveries = 0;
 
             $criticalStockAlerts = \App\Models\Product::where('vendor_id', $vendorId)
-                                                      ->where('stock', '<=', 20)
-                                                      ->orderBy('stock', 'asc')
-                                                      ->take(5)
-                                                      ->get();
-            
-            $movements = []; // Will fallback to the static blade design if empty
+                ->where('stock', '<=', 20)
+                ->orderBy('stock', 'asc')
+                ->take(5)
+                ->get();
+
+            // If the blade expects movement rows, show an empty list (no random data).
+            $movements = collect();
 
             return view("vendor.inventory", compact(
-                'vendor', 'title', 'activePage', 'totalItems', 'newToday', 
-                'soldStock', 'soldAvg', 'inbound', 'inboundDeliveries', 
-                'criticalStockAlerts', 'movements'
+                'vendor', 'title', 'activePage', 'totalItems', 'newToday',
+                'soldStock', 'soldAvg', 'inbound', 'inboundDeliveries',
+                'lowStockCount', 'criticalStockAlerts', 'movements'
             ));
         }
 
+
         if ($page === 'payments' && view()->exists("vendor.payments")) {
             $vendorId = $vendor->id;
-            
+
             // Fetch transaction history
             $transactions = \App\Models\VendorWalletTransaction::where('vendor_id', $vendorId)->latest()->get();
-            
+
             // Calculate variables
             $totalBalance = $transactions->first() ? $transactions->first()->new_balance : 0;
-            
-            // Mocking split metrics for the specific visual cards based on expected future payment schema
-            $upiTotal = $transactions->where('transaction_type', 'credit')->sum('amount') * 0.6; // Mocking 60% as UPI
-            $cashTotal = $transactions->where('transaction_type', 'credit')->sum('amount') * 0.4; // Mocking 40% as Cash
-            
+
+            // Dynamic split metrics is not reliably available from current wallet schema.
+            // To keep it DB-driven (no random/mock values), derive totals from ledger itself.
+            // If narration/method tags exist, you can refine these filters later.
+            $creditTotal = (float) $transactions->where('transaction_type', 'credit')->sum('amount');
+
+            // Fallback: show full credit total as UPI, and 0 as cash (no assumptions/random ratios).
+            $upiTotal = $creditTotal;
+            $cashTotal = 0;
+
             return view("vendor.payments", compact(
                 'vendor', 'title', 'activePage', 'transactions', 'totalBalance', 'upiTotal', 'cashTotal'
             ));
+
         }
 
         if ($page === 'ads' && view()->exists("vendor.ads")) {
@@ -395,87 +555,66 @@ class VendorAuthController extends Controller
 
             $activeCampaigns = $runningAds->where('request_status', 'Active')->count();
 
-            // Mocking visual analytics strictly adhering to the template aesthetics
-            $totalImpressions = $activeCampaigns > 0 ? (142500 + ($activeCampaigns * 1000)) : 142500; 
-            $totalClicks = $activeCampaigns > 0 ? 8240 : 8240;
-            $avgCtr = 5.78;
-            $adWallet = 12450;
-            
-            // Fallback mock array logically structured to represent a campaign table if Database is empty
-            if($runningAds->isEmpty()) {
-                $runningAds = collect([
-                    (object)[
-                        'campaign_name' => 'Weekend Brunch Sale',
-                        'request_status' => 'Active',
-                    ],
-                    (object)[
-                        'campaign_name' => 'Premium Coffee Roast',
-                        'request_status' => 'Active',
-                    ]
-                ]);
-                $activeCampaigns = 2; // Override to match mock fallback display
+            // DB-driven analytics totals:
+            // We don't have a dedicated impressions/clicks table here; use available columns if present.
+            // If columns don't exist, keep totals as 0 (no random/mock).
+            $totalImpressions = 0;
+            $totalClicks = 0;
+            $avgCtr = 0;
+            $adWallet = 0;
+
+            if (\Illuminate\Support\Facades\Schema::hasColumn('advertisement_requests', 'impressions')) {
+                $totalImpressions = (int) $runningAds->sum('impressions');
+            }
+            if (\Illuminate\Support\Facades\Schema::hasColumn('advertisement_requests', 'clicks')) {
+                $totalClicks = (int) $runningAds->sum('clicks');
             }
 
+            if ($totalImpressions > 0) {
+                $avgCtr = ($totalClicks / $totalImpressions) * 100;
+            }
+
+            // Keep adWallet as 0 because wallet schema isn't defined for ads in this repo.
+
+            // Do NOT inject mock campaigns; just show empty state from the blade.
+
+
             return view("vendor.ads", compact(
-                'vendor', 'title', 'activePage', 'runningAds', 'activeCampaigns', 
+                'vendor', 'title', 'activePage', 'runningAds', 'activeCampaigns',
                 'totalImpressions', 'totalClicks', 'avgCtr', 'adWallet'
             ));
         }
 
         if ($page === 'settlements' && view()->exists("vendor.settlements")) {
             $vendorId = $vendor->id;
-            
+
             // Retrieve actual ledger entries to calculate true available balance
             $walletTxns = \App\Models\VendorWalletTransaction::where('vendor_id', $vendorId)->latest()->get();
             $availableForPayout = $walletTxns->first() ? $walletTxns->first()->new_balance : 0;
-            
-            // Mocking a 'Settlement' model query since a dedicated table doesn't natively map to vendors yet.
-            // In a real scenario, this would filter VendorWalletTransactions by a 'Settlement' type.
-            $totalSettled = 845200; // Mock cumulative logic representing historical payouts
-            
+
+            // Derive settlements from real wallet ledger debit transactions.
+            // No mock cumulative numbers and no fallback hardcoded rows.
+            // NOTE: We cannot distinguish settlement statuses without a dedicated field/table,
+            // so we mark all derived entries as COMPLETED for now.
+
             $settlements = collect();
-            
-            // Attempt to derive genuine Settlements from negative Wallet transactions mimicking payouts
-            $payouts = $walletTxns->where('transaction_type', 'debit')->take(10);
-            
-            if($payouts->isNotEmpty()) {
-                foreach($payouts as $p) {
-                    $settlements->push((object)[
-                        'id' => 'SET-' . str_pad($p->id, 5, '0', STR_PAD_LEFT),
-                        'reference' => 'REF' . strtoupper(uniqid()),
-                        'date' => $p->created_at->format('M d, Y • h:i A'),
-                        'destination' => $vendor->bank_name ? $vendor->bank_name . ' **** ' . substr($vendor->account_no, -4) : 'Bank Account',
-                        'amount' => $p->amount,
-                        'status' => 'COMPLETED',
-                    ]);
-                }
-            } else {
-                // Fallback rendering array strictly mapping the requested template aesthetics
+
+            // Most recent debit transactions (typically payouts)
+            $payouts = $walletTxns->where('transaction_type', 'debit');
+            $totalSettled = (float) $payouts->sum('amount');
+
+            foreach($payouts->take(10) as $p) {
                 $settlements->push((object)[
-                    'id' => 'SET-00101',
-                    'reference' => 'REF892314A',
-                    'date' => now()->subDays(1)->format('M d, Y • h:i A'),
-                    'destination' => 'HDFC **** 4421',
-                    'amount' => 12500.00,
-                    'status' => 'PROCESSING',
-                ]);
-                $settlements->push((object)[
-                    'id' => 'SET-00100',
-                    'reference' => 'REF772314B',
-                    'date' => now()->subDays(8)->format('M d, Y • h:i A'),
-                    'destination' => 'HDFC **** 4421',
-                    'amount' => 45000.00,
+                    'id' => 'SET-' . str_pad((int) $p->id, 5, '0', STR_PAD_LEFT),
+                    // Deterministic reference from txn id (no uniqid/random)
+                    'reference' => 'REF' . str_pad((string) $p->id, 10, '0', STR_PAD_LEFT),
+                    'date' => $p->created_at ? $p->created_at->format('M d, Y • h:i A') : '',
+                    'destination' => $vendor->bank_name ? $vendor->bank_name . ' **** ' . substr((string) $vendor->account_no, -4) : 'Bank Account',
+                    'amount' => $p->amount,
                     'status' => 'COMPLETED',
                 ]);
-                $settlements->push((object)[
-                    'id' => 'SET-00099',
-                    'reference' => 'REF662314C',
-                    'date' => now()->subDays(15)->format('M d, Y • h:i A'),
-                    'destination' => 'HDFC **** 4421',
-                    'amount' => 8400.00,
-                    'status' => 'FAILED',
-                ]);
             }
+
 
             return view("vendor.settlements", compact(
                 'vendor', 'title', 'activePage', 'availableForPayout', 'totalSettled', 'settlements'
@@ -486,7 +625,20 @@ class VendorAuthController extends Controller
             return view("vendor.settings", compact('vendor', 'title', 'activePage'));
         }
 
-        return view('vendor.page', compact('vendor', 'title', 'activePage'));
+            // Optional: If a dedicated products view exists but this fallback was hit,
+            // show vendor products dynamically.
+            if ($page === 'products' && view()->exists('vendor.products.index')) {
+                $products = \App\Models\Product::where('vendor_id', $vendor->id)->latest()->get();
+                return view('vendor.products.index', [
+                    'vendor' => $vendor,
+                    'title' => $title,
+                    'activePage' => $activePage,
+                    'products' => $products,
+                ]);
+            }
+
+            return view('vendor.page', compact('vendor', 'title', 'activePage'));
+
     }
 
     /**
@@ -589,7 +741,7 @@ class VendorAuthController extends Controller
         }
 
         $currentMonth = now()->startOfMonth()->format('Y-m-d');
-        
+
         \App\Models\VendorPayroll::where('vendor_id', $vendor->id)
             ->where('month_year', $currentMonth)
             ->where('status', 'pending')
@@ -618,23 +770,90 @@ class VendorAuthController extends Controller
         ];
 
         $columns = ['Date', 'Description', 'Amount'];
-        $callback = function() use($columns, $type) {
+
+        $range = (string) ($request->query('range') ?? 'last_30_days');
+        $rangeMonths = match ($range) {
+            'last_30_days' => 1,
+            'last_quarter' => 3,
+            'this_year' => 6,
+            default => 1,
+        };
+
+        $start = now()->subMonths($rangeMonths)->startOfMonth();
+        $end = now()->endOfDay();
+
+        $callback = function() use($columns, $type, $vendor, $start, $end) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
-            
-            // Generate realistic rows for the export based on the requested report type
-            for ($i = 1; $i <= 15; $i++) {
-                fputcsv($file, [
-                    now()->subDays($i)->format('Y-m-d'),
-                    strtoupper(str_replace('_', ' ', $type)) . " Entry #$i",
-                    rand(1000, 5000)
-                ]);
+
+            // Make exports DB-driven (no rand/mock numbers).
+            // Since vendor-specific tables for each export type may not exist in this repo,
+            // we derive values from existing DB tables:
+            // - vendor_wallet_transactions (credits) => sales-like amounts
+            // - products table => inventory counts (exported as amounts)
+
+            if (\Illuminate\Support\Facades\Schema::hasTable('vendor_wallet_transactions')) {
+                // Default sales-like export from wallet credits by day.
+                if (in_array($type, ['daily_sales_audit', 'tax_liability_summary', 'staff_attendance'], true)) {
+                    $rows = \App\Models\VendorWalletTransaction::query()
+                        ->where('vendor_id', $vendor->id)
+                        ->where('transaction_type', 'credit')
+                        ->whereBetween('created_at', [$start, $end])
+                        ->get(['amount', 'created_at'])
+                        ->groupBy(function ($r) {
+                            return $r->created_at ? $r->created_at->format('Y-m-d') : '';
+                        })
+                        ->sortKeys();
+
+                    foreach ($rows as $date => $items) {
+                        if ($date === '') {
+                            continue;
+                        }
+                        $sum = $items->sum('amount');
+                        fputcsv($file, [
+                            $date,
+                            strtoupper(str_replace('_', ' ', $type)),
+                            (float) $sum,
+                        ]);
+                    }
+
+                    fclose($file);
+                    return;
+                }
             }
+
+            // Inventory/export fallback: derive amounts from product stock aggregated by day is not possible,
+            // so we export current inventory categories as counts.
+            if ($type === 'inventory_valuation') {
+                $categories = \App\Models\Product::query()
+                    ->where('vendor_id', $vendor->id)
+                    ->when(\Illuminate\Support\Facades\Schema::hasColumn('products', 'category'), function ($q) {
+                        $q->whereNotNull('category');
+                    })
+                    ->selectRaw('COALESCE(category, "Uncategorized") as category, SUM(stock) as total_stock')
+                    ->groupBy('category')
+                    ->get();
+
+                foreach ($categories as $row) {
+                    $desc = 'INVENTORY ' . (string) ($row->category ?? 'Uncategorized');
+                    fputcsv($file, [
+                        now()->format('Y-m-d'),
+                        $desc,
+                        (float) ($row->total_stock ?? 0),
+                    ]);
+                }
+
+                fclose($file);
+                return;
+            }
+
+            // Final fallback: empty export with headers only.
             fclose($file);
         };
 
         return response()->stream($callback, 200, $headers);
     }
+
 
     /**
      * Update Vendor Dynamic JSON Settings
@@ -647,24 +866,35 @@ class VendorAuthController extends Controller
             return redirect()->route('vendor.login')->with('error', 'Please login to access vendor portal.');
         }
 
-        $settings = $vendor->settings ?? [];
+        // Normalize settings to array (handles cases where DB stored JSON as string)
+        $settingsRaw = $vendor->settings ?? [];
+        $settings = is_array($settingsRaw) ? $settingsRaw : (is_string($settingsRaw) ? json_decode($settingsRaw, true) : []);
+        if (! is_array($settings)) {
+            $settings = [];
+        }
+
         $incoming = $request->except(['_token', 'tab_source', 'password', 'password_confirmation', 'current_password']);
-        
+
         foreach ($incoming as $key => $value) {
+            // Checkbox values come as: 'on' when checked, missing when unchecked.
             $settings[$key] = $value === 'on' ? true : $value;
         }
 
-        // Specific toggle handlers for unchecked states
+        // Ensure checkboxes are persisted as false when unchecked.
+        // This makes vendor settings behave dynamically/reliably across reloads.
         if ($request->input('tab_source') === 'security') {
             $toggles = ['two_factor_auth', 'remote_session', 'ip_restricted'];
             foreach ($toggles as $toggle) {
-                if (!$request->has($toggle)) {
+                if (! $request->has($toggle)) {
                     $settings[$toggle] = false;
                 }
             }
         }
 
+        // Persist explicitly as JSON-safe array
         $vendor->update(['settings' => $settings]);
+
+
 
         return redirect()->back()->with('success', 'Settings applied successfully.');
     }

@@ -17,7 +17,7 @@
 
         <!-- Products Grid -->
         <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto pb-6 custom-scrollbar pr-2">
-            
+
             <template x-if="filteredProducts().length === 0">
                 <div class="col-span-full py-10 flex flex-col items-center justify-center text-slate-400">
                     <i data-lucide="package-search" class="w-16 h-16 mb-4 opacity-50"></i>
@@ -31,7 +31,7 @@
                     <div class="absolute top-4 left-4 px-3 py-1.5 rounded-xl text-xs font-black z-10"
                          :class="product.stock > 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'"
                          x-text="product.stock > 0 ? product.stock : 'Out of Stock'"></div>
-                    
+
                     <div class="w-20 h-20 mx-auto mt-4 rounded-full bg-indigo-50 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform overflow-hidden shrink-0 relative">
                         <template x-if="product.image">
                             <img :src="product.image.startsWith('http') ? product.image : '/storage/' + product.image" class="w-full h-full object-cover">
@@ -68,7 +68,7 @@
 
             <!-- Cart Items Area -->
             <div class="flex-1 overflow-y-auto space-y-4 custom-scrollbar pr-2 min-h-[250px]">
-                
+
                 <template x-if="cart.length === 0">
                     <div class="h-full flex flex-col items-center justify-center text-slate-300 py-10">
                         <i data-lucide="shopping-bag" class="w-16 h-16 mb-4"></i>
@@ -138,11 +138,13 @@
                     </div>
                 </div>
 
-                <button class="w-full mt-4 py-5 rounded-[1.5rem] font-black text-lg shadow-xl transition-all flex items-center justify-center gap-3 group" 
+                <button class="w-full mt-4 py-5 rounded-[1.5rem] font-black text-lg shadow-xl transition-all flex items-center justify-center gap-3 group"
                         :class="cart.length === 0 ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none' : 'bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/20 active:scale-95'"
-                        :disabled="cart.length === 0">
+                        :disabled="cart.length === 0"
+                        @click.prevent="payNow()">
                     <span>Pay Now</span> <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
                 </button>
+
             </div>
         </div>
     </div>
@@ -179,7 +181,7 @@
 
             addToCart(product) {
                 if (product.stock <= 0) return; // Prevent adding out of stock items
-                
+
                 let existingItem = this.cart.find(item => item.id === product.id);
                 if (existingItem) {
                     if (existingItem.quantity < product.stock) {
@@ -208,7 +210,7 @@
                     }
                 }
             },
-            
+
             cartTotalItems() {
                 return this.cart.reduce((total, item) => total + item.quantity, 0);
             },
@@ -224,10 +226,54 @@
 
             getTotal() {
                 return this.getSubtotal() + this.getGST();
+            },
+
+            async payNow() {
+                try {
+                    if (this.cart.length === 0) return;
+
+                    const payload = {
+                        items: this.cart.map(i => ({
+                            product_id: i.id,
+                            name: i.name,
+                            price: i.price,
+                            quantity: i.quantity,
+                            stock: i.stock
+                        })),
+                        payment_method: this.paymentMethod,
+                        payment_reference: this.paymentReference || null,
+                        subtotal: this.getSubtotal(),
+                        gst: this.getGST(),
+                        total: this.getTotal(),
+                    };
+
+                    const res = await fetch('{{ route('vendor.billing.pay') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok || !data || !data.redirect_url) {
+                        alert('Payment initiation failed: ' + (data?.message || res.status));
+                        return;
+                    }
+
+
+                    window.location.href = data.redirect_url;
+                } catch (e) {
+                    console.error(e);
+                    alert('Payment initiation error');
+                }
             }
         }))
     });
 </script>
+
 <style>
     [x-cloak] { display: none !important; }
 </style>

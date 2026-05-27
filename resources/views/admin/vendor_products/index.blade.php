@@ -47,8 +47,8 @@
                                     </td>
                                     <td>
                                         @if($product->vendor)
-                                            <span class="text-primary fw-bold">{{ $product->vendor->name ?? 'Unknown Vendor' }}</span><br>
-                                            <small>{{ $product->vendor->mobile ?? '' }}</small>
+                                            <span class="text-primary fw-bold">{{ $product->vendor->vendor_name ?? 'Unknown Vendor' }}</span><br>
+                                            <small>{{ $product->vendor->mobile_no ?? '' }}</small>
                                         @else
                                             <span class="text-warning">Vendor Not Found</span>
                                         @endif
