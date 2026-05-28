@@ -10,6 +10,14 @@ use App\Http\Controllers\Api\ECard\QrCodeController;
 use App\Http\Controllers\Api\ECard\WalletController;
 use App\Http\Controllers\Api\ECard\RegistrationController;
 
+use App\Http\Controllers\Api\Vendor\VendorAuthApiController;
+use App\Http\Controllers\Api\Vendor\VendorProfileApiController;
+use App\Http\Controllers\Api\Vendor\VendorProductsApiController;
+use App\Http\Controllers\Api\Vendor\VendorBillingApiController;
+use App\Http\Controllers\Api\Vendor\VendorStaffApiController;
+use App\Http\Controllers\Api\Vendor\VendorPayrollApiController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,8 +33,40 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Vendor API Routes (for Vendor app)
+Route::prefix('vendor')->group(function () {
+
+    // Public: login + otp verify
+    Route::post('/login', [VendorAuthApiController::class, 'login']);
+    Route::post('/login/otp/verify', [VendorAuthApiController::class, 'verifyOtp']);
+
+    // Logout (requires auth)
+    Route::middleware('auth:sanctum')->post('/logout', [VendorAuthApiController::class, 'logout']);
+
+    // Protected APIs
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/dashboard', [VendorProfileApiController::class, 'dashboard']);
+        Route::get('/profile', [VendorProfileApiController::class, 'profile']);
+        Route::post('/profile', [VendorProfileApiController::class, 'updateProfile']);
+        Route::post('/change-password', [VendorProfileApiController::class, 'changePassword']);
+
+        Route::get('/products', [VendorProductsApiController::class, 'index']);
+        Route::post('/products', [VendorProductsApiController::class, 'store']);
+        Route::delete('/products/{id}', [VendorProductsApiController::class, 'destroy']);
+
+        Route::post('/billing/pay', [VendorBillingApiController::class, 'pay']);
+
+        Route::get('/staff', [VendorStaffApiController::class, 'index']);
+        Route::post('/staff', [VendorStaffApiController::class, 'store']);
+
+        Route::get('/payroll', [VendorPayrollApiController::class, 'index']);
+        Route::post('/payroll/process', [VendorPayrollApiController::class, 'process']);
+    });
+});
+
 // ECard API Routes
 Route::prefix('ecard')->group(function () {
+
     // CSRF mismatch fix: login endpoint is stateless and should not depend on cookie-based CSRF.
     Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware(['web']);
 
