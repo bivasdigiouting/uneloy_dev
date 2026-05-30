@@ -12,7 +12,7 @@
         :root {
             --header-gradient: linear-gradient(to right, #c42086, #b02995, #9b30a2, #8435ad, #6a39b6);
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -101,7 +101,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             min-height: 200px;
         }
-        
+
         .ecard::before {
             content: '';
             position: absolute;
@@ -123,13 +123,13 @@
         .ecard-logo {
             text-align: right;
         }
-        
+
         .ecard-logo h5 {
             margin: 0;
             font-weight: 700;
             font-size: 1.2rem;
         }
-        
+
         .ecard-logo small {
             font-size: 0.7rem;
             opacity: 0.8;
@@ -147,7 +147,7 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         .ecard-number {
             font-family: 'Courier New', monospace;
             letter-spacing: 2px;
@@ -166,7 +166,7 @@
         .ecard-val {
             text-align: center;
         }
-        
+
         .ecard-val span {
             display: block;
             font-weight: 700;
@@ -246,24 +246,24 @@
             overflow: hidden;
             min-height: 160px;
         }
-        
+
         .ad-content {
             width: 60%;
             z-index: 2;
         }
-        
+
         .ad-title {
             color: #2d3748;
             font-weight: 700;
             font-size: 1.2rem;
             margin-bottom: 5px;
         }
-        
+
         .ad-subtitle {
             color: #4a5568;
             font-size: 0.85rem;
         }
-        
+
         /* Support Cards */
         .support-header {
             background: linear-gradient(to right, #ec4899, #a855f7);
@@ -273,7 +273,7 @@
             font-weight: 600;
             text-align: center;
         }
-        
+
         /* Vertical List */
         .list-item-card {
             background: white;
@@ -284,7 +284,7 @@
             gap: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
-        
+
         .list-icon {
             width: 40px;
             height: 40px;
@@ -296,7 +296,7 @@
             justify-content: center;
             font-size: 18px;
         }
-        
+
         .list-text {
             font-weight: 600;
             font-size: 0.95rem;
@@ -311,11 +311,11 @@
             padding: 5px 0 15px 0;
             scrollbar-width: none; /* Firefox */
         }
-        
+
         .horizontal-scroll::-webkit-scrollbar {
             display: none; /* Chrome/Safari */
         }
-        
+
         .feature-card {
             min-width: 280px;
             background: white;
@@ -323,18 +323,18 @@
             overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.05);
         }
-        
+
         .feature-img {
             height: 120px;
             width: 100%;
             object-fit: cover;
             background-color: #e2e8f0;
         }
-        
+
         .feature-body {
             padding: 15px;
         }
-        
+
         .feature-title {
             font-weight: 700;
             margin-bottom: 5px;
@@ -355,7 +355,7 @@
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
         }
-        
+
         .nav-item-link {
             display: flex;
             flex-direction: column;
@@ -365,15 +365,15 @@
             font-size: 0.75rem;
             gap: 4px;
         }
-        
+
         .nav-item-link.active {
             color: #1a202c;
         }
-        
+
         .nav-item-link i {
             font-size: 1.2rem;
         }
-        
+
         .scan-btn {
             background: linear-gradient(135deg, #D53F8C 0%, #805AD5 100%);
             width: 60px;
@@ -400,7 +400,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .rewards-banner h3 {
             font-weight: 700;
             font-size: 1.5rem;
@@ -412,11 +412,11 @@
             display: flex;
             gap: 20px;
         }
-        
+
         .app-icon-box {
             text-align: center;
         }
-        
+
         .app-img {
             width: 60px;
             height: 60px;
@@ -434,7 +434,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
-        
+
         .link-card {
             background: white;
             padding: 15px;
@@ -447,18 +447,18 @@
             text-decoration: none;
             color: inherit;
         }
-        
+
         .link-card-icon {
             font-size: 24px;
             margin-bottom: 10px;
         }
-        
+
         .link-card-title {
             font-weight: 600;
             font-size: 0.95rem;
             margin-bottom: 5px;
         }
-        
+
         .link-card-desc {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -491,7 +491,7 @@
                 bottom: 0;
                 /* Remove rounded corners at very bottom if desired, or keep them */
             }
-            
+
             /* Optional: Add a 'Desktop View' hint */
             body::before {
                 content: 'Mobile View Mode';
@@ -504,37 +504,94 @@
                 pointer-events: none;
             }
         }
+
+        .desk-sheen::after {
+            content: '';
+            position: absolute;
+            top: -140px;
+            left: -80px;
+            width: 220px;
+            height: 420px;
+            background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0) 70%);
+            transform: rotate(18deg);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .desk-card-glow {
+            box-shadow: 0 18px 45px rgba(16, 24, 40, 0.10), 0 0 0 1px rgba(255,255,255,0.08) inset;
+        }
+
+        .desk-gradient-pink {
+            background: linear-gradient(135deg, #ff4ecd 0%, #9f7aea 55%, #38b2ac 120%);
+        }
+
+        .desk-gradient-blue {
+            background: linear-gradient(135deg, rgba(59,130,246,0.20), rgba(59,130,246,0.06));
+        }
+
+        .desk-gradient-green {
+            background: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(16,185,129,0.06));
+        }
+
+        .desk-gradient-purple {
+            background: linear-gradient(to right, #a78bfa, #7c3aed);
+        }
+
+        .desk-pill {
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-weight: 700;
+        }
+
+        .desk-section-shadow {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .hover-lift {
+            transition: transform 160ms ease, box-shadow 160ms ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-3px);
+        }
+        .hover-shadow {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Desktop Wrapper -->
-    <div class="desktop-wrapper d-none d-lg-flex bg-light min-vh-100" style="width: 100%;margin-left: 294px;">
+    <!-- Desktop Wrapper (redesigned) -->
+    <div class="desktop-wrapper d-none d-lg-flex min-vh-100" style="width: 100%;margin-left: 294px;background: radial-gradient(circle at 10% 10%, rgba(255,78,205,0.18), rgba(255,78,205,0) 45%), radial-gradient(circle at 90% 20%, rgba(124,58,237,0.18), rgba(124,58,237,0) 50%), radial-gradient(circle at 40% 100%, rgba(56,178,172,0.14), rgba(56,178,172,0) 55%), linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.12));">
         @include('user.partials.desktop-sidebar')
+
         <div class="flex-grow-1 d-flex flex-column ms-auto col-md-12" style="margin-left: 280px;width:100%;">
-             @include('user.partials.desktop-header')
-             <main class="p-4">
-                 <div class="container-fluid">
-                    <!-- Desktop Content -->
+            @include('user.partials.desktop-header')
+
+            <main class="p-4" style="padding-bottom: 70px;">
+                <div class="container-fluid">
+                    {{-- Modern Desktop Layout (more attractive) --}}
                     <div class="row g-4 mb-4">
-                        <!-- eCard Widget -->
-                        <div class="col-md-6 col-xl-4">
-                            <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden text-white" style="background: linear-gradient(135deg, #000428 0%, #004e92 100%);">
+                        {{-- Left: Membership / e-Card --}}
+                        <div class="col-lg-5">
+                            <div class="card border-0 desk-sheen desk-card-glow hover-lift overflow-hidden" style="border-radius: 1.35rem; background: radial-gradient(circle at 15% 15%, rgba(255,78,205,0.55), rgba(255,78,205,0) 52%), radial-gradient(circle at 85% 30%, rgba(56,178,172,0.30), rgba(56,178,172,0) 55%), linear-gradient(135deg, #0b1020 0%, #004e92 70%, #7c3aed 120%); color:#fff;">
                                 <div class="card-body p-4 position-relative">
-                                    <div class="d-flex justify-content-between align-items-start mb-4">
+                                    <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <small class="opacity-75 d-block mb-1">Membership</small>
                                             <h5 class="fw-bold mb-0">{{ $user['full_name'] ?? 'User Name' }}</h5>
                                         </div>
                                         <div class="text-end">
-                                            <h5 class="fw-bold mb-0">e<span class="text-info">></span>card</h5>
-                                            <small class="opacity-75">Benefits Card</small>
+                                            <div class="desk-pill desk-gradient-pink text-white" style="display:inline-flex; align-items:center; justify-content:center; box-shadow: 0 12px 30px rgba(255,78,205,0.20);">
+                                                <h5 class="fw-bold mb-0" style="letter-spacing:0.2px;">e<span style="opacity:0.95">></span>card</h5>
+                                            </div>
+                                            <small class="opacity-75 d-block mt-2">Benefits Card</small>
                                         </div>
                                     </div>
-                                    
-                                    <div class="mb-4">
+
+                                    <div class="mt-4">
                                         <small class="opacity-75 d-block mb-1">Card Number</small>
-                                        <div class="font-monospace fs-5 letter-spacing-2">
+                                        <div class="font-monospace fs-5 letter-spacing-2" style="font-weight:800; text-shadow: 0 8px 20px rgba(0,0,0,0.25);">
                                             @if(isset($user['user_id']))
                                                 {{ substr($user['user_id'], 0, 4) }} **** **** {{ substr($user['user_id'], -4) }}
                                             @else
@@ -543,59 +600,78 @@
                                         </div>
                                     </div>
 
-                                    <div class="d-flex justify-content-between pt-3 border-top border-white border-opacity-25">
+                                    <div class="d-flex justify-content-between pt-4 mt-3" style="border-top: 1px solid rgba(255,255,255,0.22);">
                                         <div class="text-center">
-                                            <span class="d-block fw-bold">₹ 50,000</span>
+                                            <span class="d-block fw-bold" style="letter-spacing:0.2px; font-size:1.05rem;">₹ {{ number_format((float)($user['ecard_limit'] ?? $user['wallet_limit'] ?? 50000), 0) }}</span>
                                             <small class="opacity-75" style="font-size: 0.7rem;">Limit</small>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block fw-bold">₹ 5,000</span>
+                                            <span class="d-block fw-bold" style="letter-spacing:0.2px; font-size:1.05rem;">₹ {{ number_format((float)($user['wallet_balance'] ?? $walletBalance ?? $user['wallet_balance_amount'] ?? 0), 2) }}</span>
+
                                             <small class="opacity-75" style="font-size: 0.7rem;">Balance</small>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block fw-bold">₹ 200</span>
+                                            <span class="d-block fw-bold" style="letter-spacing:0.2px; font-size:1.05rem;">{{ number_format((int)($user['reward_points'] ?? $user['points'] ?? 200), 0) }}</span>
                                             <small class="opacity-75" style="font-size: 0.7rem;">Points</small>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Decorative Circle -->
-                                    <div class="position-absolute rounded-circle bg-white opacity-10" style="width: 200px; height: 200px; top: -50px; right: -50px;"></div>
+
+                                    <div class="position-absolute rounded-circle bg-white opacity-10" style="width: 240px; height: 240px; top: -85px; right: -110px;"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Stats / Wallet -->
-                        <div class="col-md-6 col-xl-8">
+                        {{-- Right: Wallet + Rewards --}}
+                        <div class="col-lg-7">
                             <div class="row g-4">
                                 <div class="col-md-6">
-                                    <div class="card border-0 shadow-sm rounded-4 h-100 bg-white">
+                                    <div class="card border-0 desk-card-glow shadow-sm rounded-4 h-100 hover-lift" style="background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(59,130,246,0.06));">
                                         <div class="card-body p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <h6 class="fw-bold m-0 text-secondary">Wallet Balance</h6>
-                                                <div class="icon-box bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(59,130,246,0.18); color:#2563eb; box-shadow: 0 10px 30px rgba(37,99,235,0.25);">
                                                     <i class="fas fa-wallet"></i>
                                                 </div>
                                             </div>
-                                            <h2 class="fw-bold mb-2">₹ 1,250.00</h2>
-                                            <div class="d-flex gap-2 mt-3">
-                                                <a href="{{ route('user.wallet.show') }}" class="btn btn-sm btn-primary rounded-pill px-3">Add Money</a>
-                                                <a href="{{ route('user.wallet.transfer.qr.show') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Transfer</a>
+                                            <h2 class="fw-bold mb-2" style="letter-spacing:0.2px;">₹ {{ number_format((float)($user['wallet_balance'] ?? $walletBalance ?? $user['wallet_balance_amount'] ?? 0), 2) }}</h2>
+                                            <div class="d-flex gap-2 mt-3 flex-wrap">
+                                                <a href="{{ route('user.wallet.show') }}" class="btn btn-sm text-white rounded-pill px-3" style="background: linear-gradient(135deg,#3b82f6,#7c3aed); border:none; box-shadow: 0 14px 30px rgba(124,58,237,0.20);">Add Money</a>
+                                                <a href="{{ route('user.wallet.transfer.qr.show') }}" class="btn btn-sm rounded-pill px-3" style="border:1px solid rgba(59,130,246,0.35); color:#2563eb; background: rgba(59,130,246,0.05);">Transfer</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
-                                    <div class="card border-0 shadow-sm rounded-4 h-100 bg-white">
+                                    <div class="card border-0 desk-card-glow shadow-sm rounded-4 h-100 hover-lift" style="background: linear-gradient(135deg, rgba(16,185,129,0.20), rgba(16,185,129,0.06));">
                                         <div class="card-body p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <h6 class="fw-bold m-0 text-secondary">Reward Points</h6>
-                                                <div class="icon-box bg-success-subtle text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(16,185,129,0.18); color:#059669; box-shadow: 0 10px 30px rgba(5,150,105,0.20);">
                                                     <i class="fas fa-gift"></i>
                                                 </div>
                                             </div>
-                                            <h2 class="fw-bold mb-2">350 Pts</h2>
-                                            <p class="small text-muted mb-0">Equivalent to ₹ 35.00</p>
-                                            <a href="{{ route('user.service.report.reward') }}" class="btn btn-link p-0 text-decoration-none small fw-semibold mt-2">Redeem Now <i class="fas fa-arrow-right small"></i></a>
+                                            <h2 class="fw-bold mb-2" style="letter-spacing:0.2px;">{{ number_format((int)($user['reward_points'] ?? $user['points'] ?? 350), 0) }} Pts</h2>
+                                            <p class="small text-muted mb-0">Equivalent to ₹ {{ number_format(((int)($user['reward_points'] ?? $user['points'] ?? 350)) / 10, 2) }}</p>
+
+
+
+                                            <a href="{{ route('user.service.report.reward') }}" class="btn btn-link p-0 text-decoration-none small fw-semibold mt-2" style="color:#065f46;">Redeem Now <i class="fas fa-arrow-right small"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="card border-0 shadow-sm rounded-4 desk-sheen desk-section-shadow hover-lift" style="background: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.22), rgba(255,255,255,0) 55%), linear-gradient(135deg, #ff4ecd 0%, #7c3aed 55%, #38b2ac 120%); color:#fff;">
+                                    <div class="card-body p-4 d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                                        <div>
+                                            <h5 class="fw-bold mb-1">+50 Rewards</h5>
+                                            <small class="opacity-90">Your next reward awaits. Explore & earn cashback.</small>
+                                        </div>
+                                        <div class="d-flex gap-2 flex-wrap">
+                                            <a href="#" class="btn btn-light btn-sm rounded-pill px-4 fw-semibold" style="background: rgba(255,255,255,0.95); color:#5b21b6; border:none;">Rewards View ></a>
+                                            <a href="{{ route('user.service.report.reward') }}" class="btn btn-outline-light btn-sm rounded-pill px-4 fw-semibold" style="border-color: rgba(255,255,255,0.75);">My Points ></a>
                                         </div>
                                     </div>
                                 </div>
@@ -603,115 +679,81 @@
                         </div>
                     </div>
 
-                    <!-- Services Grid -->
-                    <h5 class="fw-bold mb-3 text-dark">Quick Services</h5>
-                    <div class="row g-4 mb-4">
-                        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-                            <a href="{{ route('user.service.recharge.mobile') }}" class="card border-0 shadow-sm h-100 text-decoration-none hover-shadow transition-all">
-                                <div class="card-body text-center p-4">
-                                    <div class="mb-3 mx-auto rounded-circle bg-danger-subtle text-danger d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 20px;">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </div>
-                                    <h6 class="text-dark fw-semibold mb-0">Mobile</h6>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-                            <a href="{{ route('user.service.recharge.dth') }}" class="card border-0 shadow-sm h-100 text-decoration-none hover-shadow transition-all">
-                                <div class="card-body text-center p-4">
-                                    <div class="mb-3 mx-auto rounded-circle bg-info-subtle text-info d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 20px;">
-                                        <i class="fas fa-tv"></i>
-                                    </div>
-                                    <h6 class="text-dark fw-semibold mb-0">DTH</h6>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-                            <a href="{{ route('user.service.recharge.fastag') }}" class="card border-0 shadow-sm h-100 text-decoration-none hover-shadow transition-all">
-                                <div class="card-body text-center p-4">
-                                    <div class="mb-3 mx-auto rounded-circle bg-warning-subtle text-warning d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 20px;">
-                                        <i class="fas fa-car"></i>
-                                    </div>
-                                    <h6 class="text-dark fw-semibold mb-0">FASTag</h6>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-                            <a href="{{ route('user.service.recharge.utility.link') }}" class="card border-0 shadow-sm h-100 text-decoration-none hover-shadow transition-all">
-                                <div class="card-body text-center p-4">
-                                    <div class="mb-3 mx-auto rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 20px;">
-                                        <i class="fas fa-file-invoice"></i>
-                                    </div>
-                                    <h6 class="text-dark fw-semibold mb-0">Bills</h6>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-                            <a href="{{ route('user.benefit.bookcamp.show') }}" class="card border-0 shadow-sm h-100 text-decoration-none hover-shadow transition-all">
-                                <div class="card-body text-center p-4">
-                                    <div class="mb-3 mx-auto rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 20px;">
-                                        <i class="fas fa-campground"></i>
-                                    </div>
-                                    <h6 class="text-dark fw-semibold mb-0">Book Camp</h6>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-                            <a href="{{ route('user.benefit.blood.dashboard') }}" class="card border-0 shadow-sm h-100 text-decoration-none hover-shadow transition-all">
-                                <div class="card-body text-center p-4">
-                                    <div class="mb-3 mx-auto rounded-circle bg-danger-subtle text-danger d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 20px;">
-                                        <i class="fas fa-droplet"></i>
-                                    </div>
-                                    <h6 class="text-dark fw-semibold mb-0">Blood Seva</h6>
-                                </div>
-                            </a>
-                        </div>
+
+                    {{-- Quick services grid --}}
+                    <div class="d-flex align-items-end justify-content-between mb-3">
+                        <h5 class="fw-bold mb-0 text-dark">Quick Services</h5>
+                        <a href="#" class="text-primary small text-decoration-none fw-semibold">View All</a>
                     </div>
-                    
-                    <!-- Recent Activity / Ads -->
+
+                    <div class="row g-3 mb-4">
+                        @php($services = [
+                            ['route'=>'user.service.recharge.mobile','icon'=>'fa-mobile-alt','title'=>'Mobile'],
+                            ['route'=>'user.service.recharge.dth','icon'=>'fa-tv','title'=>'DTH'],
+                            ['route'=>'user.service.recharge.fastag','icon'=>'fa-car','title'=>'FASTag'],
+                            ['route'=>'user.service.recharge.utility.link','icon'=>'fa-file-invoice','title'=>'Bills'],
+                            ['route'=>'user.benefit.bookcamp.show','icon'=>'fa-campground','title'=>'Book Camp'],
+                            ['route'=>'user.benefit.blood.dashboard','icon'=>'fa-droplet','title'=>'Blood Seva'],
+                        ])
+                        @foreach($services as $s)
+                            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                                <a href="{{ route($s['route']) }}" class="card border-0 desk-card-glow h-100 text-decoration-none hover-lift" style="background: linear-gradient(135deg, rgba(124,58,237,0.05), rgba(255,78,205,0.04)); transition: transform 160ms ease, box-shadow 160ms ease;">
+                                    <div class="card-body text-center p-4">
+                                        <div class="mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: rgba(255,78,205,0.10); color:#d53f8c; font-size:20px; box-shadow: 0 16px 35px rgba(213,63,140,0.18);">
+                                            <i class="fas {{ $s['icon'] }}"></i>
+                                        </div>
+                                        <h6 class="text-dark fw-semibold mb-0">{{ $s['title'] }}</h6>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- Apps + Refer --}}
                     <div class="row g-4">
                         <div class="col-lg-8">
-                             <div class="card border-0 shadow-sm rounded-4">
-                                <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                    <h6 class="fw-bold m-0">Apps by Uonely</h6>
+                            <div class="card border-0 shadow-sm rounded-4 hover-lift" style="background: linear-gradient(135deg, rgba(255,78,205,0.06), rgba(124,58,237,0.05), rgba(56,178,172,0.04));">
+                                <div class="card-header bg-transparent border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-bold m-0" style="color:#1f2937;">Apps by Uonely</h6>
                                     <a href="#" class="text-primary small text-decoration-none fw-semibold">View All</a>
                                 </div>
                                 <div class="card-body p-4">
                                     <div class="d-flex gap-4">
                                         <div class="text-center">
-                                            <div class="rounded-3 border d-flex align-items-center justify-content-center mx-auto mb-2 text-primary bg-light" style="width: 60px; height: 60px; font-size: 24px; font-weight: bold;">U</div>
+                                            <div class="rounded-3 border-0 d-flex align-items-center justify-content-center mx-auto mb-2 text-white" style="width: 60px; height: 60px; font-size: 24px; font-weight: 800; background: linear-gradient(135deg,#3b82f6,#7c3aed); box-shadow: 0 16px 30px rgba(59,130,246,0.18);">U</div>
                                             <small class="fw-semibold">U Mart</small>
                                         </div>
                                         <div class="text-center">
-                                            <div class="rounded-3 border d-flex align-items-center justify-content-center mx-auto mb-2 text-warning bg-light" style="width: 60px; height: 60px; font-size: 24px;">
+                                            <div class="rounded-3 border-0 d-flex align-items-center justify-content-center mx-auto mb-2 text-white" style="width: 60px; height: 60px; font-size: 22px; background: linear-gradient(135deg,#f59e0b,#ef4444); box-shadow: 0 16px 30px rgba(245,158,11,0.16);">
                                                 <i class="fas fa-graduation-cap"></i>
                                             </div>
                                             <small class="fw-semibold">U Admiss</small>
                                         </div>
                                     </div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
+
                         <div class="col-lg-4">
-                            <div class="card border-0 shadow-sm rounded-4 bg-primary text-white overflow-hidden">
+                            <div class="card border-0 shadow-sm rounded-4 text-white overflow-hidden" style="background: linear-gradient(135deg, #ff4ecd 0%, #7c3aed 55%, #3b82f6 120%); box-shadow: 0 24px 60px rgba(124,58,237,0.25);">
                                 <div class="card-body p-4 position-relative">
-                                    <h4 class="fw-bold mb-2">Refer & Earn</h4>
+                                    <h4 class="fw-bold mb-2" style="letter-spacing:0.2px;">Refer & Earn</h4>
                                     <p class="mb-3 opacity-90">Invite friends and earn up to ₹500 per referral!</p>
-                                    <button class="btn btn-light rounded-pill px-4 fw-semibold text-primary">Invite Now</button>
+                                    <button class="btn btn-light rounded-pill px-4 fw-semibold" style="background: rgba(255,255,255,0.95); color:#5b21b6; border:none; box-shadow: 0 18px 40px rgba(255,255,255,0.10);">Invite Now</button>
                                     <i class="fas fa-users position-absolute opacity-25" style="font-size: 100px; bottom: -20px; right: -20px;"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                 </div>
-             </main>
+                </div>
+            </main>
         </div>
     </div>
 
+
     <!-- Mobile-First Wrapper -->
     <div class="mobile-wrapper d-lg-none">
-        
+
         <!-- Header -->
         <header class="app-header">
             <div class="header-top">
@@ -752,7 +794,7 @@
                         <small>the benefits card</small>
                     </div>
                 </div>
-                
+
                 <div class="ecard-details">
                     <label>e-Card Number</label>
                     <div class="ecard-number">
@@ -763,7 +805,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div class="ecard-footer">
                     <div class="ecard-val">
                         <span>₹ 50,000</span>
@@ -921,7 +963,7 @@
                         <i class="fas fa-shopping-cart text-info" style="font-size: 30px;"></i>
                     </div>
                 </a>
-                
+
                 <!-- e Store -->
                 <a href="{{ route('user.estore.categories') }}" class="link-card">
                     <div>
@@ -956,7 +998,7 @@
                 <button class="btn btn-sm btn-outline-light rounded-pill px-3">View Your Points ></button>
             </div>
         </div>
-        
+
         <!-- Coming Soon / Health / Education Sections -->
         <div class="section-container">
             <div class="section-title">
@@ -989,7 +1031,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Bottom Spacer -->
         <div style="height: 50px;"></div>
 
