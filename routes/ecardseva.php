@@ -29,11 +29,29 @@ Route::prefix('ecard')->name('ecard.')->group(function () {
         Route::get('/blood-support', [\App\Http\Controllers\ECard\BloodSupportController::class, 'index'])->name('blood.index');
         Route::get('/digital-wallet', [\App\Http\Controllers\ECard\DigitalWalletController::class, 'index'])->name('digital-wallet.index');
 
+        // Recharge & Bills (E-Card Seva)
+        Route::prefix('recharge')->name('recharge.')->group(function () {
+            Route::get('/mobile', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'mobileIndex'])->name('mobile');
+            Route::get('/dth', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'dthIndex'])->name('dth');
+            Route::get('/fastag', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'fastagIndex'])->name('fastag');
+            Route::get('/bbps', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'bbpsIndex'])->name('bbps');
+
+            Route::match(['get','post'], '/confirm', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'rechargeConfirm'])->name('confirm');
+
+            Route::post('/fetch-operator', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'fetchMobileOperator'])->name('fetch-operator');
+            Route::post('/fetch-plans', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'fetchPlans'])->name('fetch-plans');
+            Route::post('/fetch-dth-plans', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'fetchDthPlans'])->name('fetch-dth-plans');
+
+            Route::post('/create-order', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'createOrder'])->name('create-order');
+            Route::post('/process', [\App\Http\Controllers\ECard\ECardSevaRechargeController::class, 'processRecharge'])->name('process');
+        });
+
+
         Route::get('/registration/create', [\App\Http\Controllers\ECardPortalRegistrationController::class, 'create'])->name('registration.create');
         Route::post('/registration', [\App\Http\Controllers\ECardPortalRegistrationController::class, 'store'])->name('registration.store');
         Route::post('/registration/verify-aadhaar', [\App\Http\Controllers\ECardPortalRegistrationController::class, 'verifyAadhaar'])->name('registration.verify-aadhaar');
         Route::post('/registration/verify-aadhaar-document', [\App\Http\Controllers\ECardPortalRegistrationController::class, 'verifyAadhaarDocument'])->name('registration.verify-aadhaar-document');
-        
+
         Route::get('/registration/payment/{id}', [\App\Http\Controllers\ECardPortalRegistrationController::class, 'paymentSelection'])->name('registration.payment');
         Route::post('/registration/payment/{id}/wallet', [\App\Http\Controllers\ECardPortalRegistrationController::class, 'processWalletPayment'])->name('registration.payment.wallet');
 Route::post('/registration/payment/{id}/gateway', [\App\Http\Controllers\ECardPortalRegistrationController::class, 'processGatewayPayment'])->name('registration.payment.gateway');

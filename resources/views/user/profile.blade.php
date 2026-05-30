@@ -280,7 +280,7 @@
                                      </div>
                                      <div class="d-flex align-items-center justify-content-between p-3 rounded-3 bg-light">
                                          <span class="small fw-semibold text-muted">Reward Points</span>
-                                         <span class="fw-bold text-dark">200</span>
+                                         <span class="fw-bold text-dark">{{ number_format($points ?? 200, 0) }}</span>
                                      </div>
                                 </div>
                             </div>

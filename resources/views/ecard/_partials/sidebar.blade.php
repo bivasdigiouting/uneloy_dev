@@ -116,6 +116,30 @@
                             </a>
                         </li>
 
+                        @if(\App\Helpers\ECardPermission::canView('ecard.recharge.mobile') || \App\Helpers\ECardPermission::canView('ecard.recharge.bbps'))
+                        <li class="submenu">
+                            <a href="javascript:void(0);">
+                                <i data-feather="file-invoice"></i><span>Recharge &amp; Bills</span><span class="menu-arrow"></span>
+                            </a>
+                            <ul>
+                                @if(\App\Helpers\ECardPermission::canView('ecard.recharge.mobile'))
+                                <li class="{{ request()->routeIs('ecard.recharge.mobile') ? 'active' : '' }}"><a href="{{ route('ecard.recharge.mobile') }}">Mobile Recharge</a></li>
+                                @endif
+                                @if(\App\Helpers\ECardPermission::canView('ecard.recharge.dth'))
+                                <li class="{{ request()->routeIs('ecard.recharge.dth') ? 'active' : '' }}"><a href="{{ route('ecard.recharge.dth') }}">DTH Recharge</a></li>
+                                @endif
+                                @if(\App\Helpers\ECardPermission::canView('ecard.recharge.fastag'))
+                                <li class="{{ request()->routeIs('ecard.recharge.fastag') ? 'active' : '' }}"><a href="{{ route('ecard.recharge.fastag') }}">FASTag Recharge</a></li>
+                                @endif
+                                @if(\App\Helpers\ECardPermission::canView('ecard.recharge.bbps'))
+                                <li class="{{ request()->routeIs('ecard.recharge.bbps') ? 'active' : '' }}"><a href="{{ route('ecard.recharge.bbps') }}?category=electricity">Bill Payments (BBPS)</a></li>
+                                @endif
+                            </ul>
+                        </li>
+                        @endif
+
+
+
                 @if($userModuleVisible)
                 <li class="submenu">
                     <a href="javascript:void(0);">

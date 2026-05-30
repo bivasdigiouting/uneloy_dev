@@ -565,7 +565,7 @@
     <div class="desktop-wrapper d-none d-lg-flex min-vh-100" style="width: 100%;margin-left: 294px;background: radial-gradient(circle at 10% 10%, rgba(255,78,205,0.18), rgba(255,78,205,0) 45%), radial-gradient(circle at 90% 20%, rgba(124,58,237,0.18), rgba(124,58,237,0) 50%), radial-gradient(circle at 40% 100%, rgba(56,178,172,0.14), rgba(56,178,172,0) 55%), linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.12));">
         @include('user.partials.desktop-sidebar')
 
-        <div class="flex-grow-1 d-flex flex-column ms-auto col-md-12" style="margin-left: 280px;width:100%;">
+        <div class="flex-grow-1 d-flex flex-column ms-auto" style="margin-left: 280px;">
             @include('user.partials.desktop-header')
 
             <main class="p-4" style="padding-bottom: 70px;">
@@ -670,7 +670,7 @@
                                             <small class="opacity-90">Your next reward awaits. Explore & earn cashback.</small>
                                         </div>
                                         <div class="d-flex gap-2 flex-wrap">
-                                            <a href="#" class="btn btn-light btn-sm rounded-pill px-4 fw-semibold" style="background: rgba(255,255,255,0.95); color:#5b21b6; border:none;">Rewards View ></a>
+                                            <a href="{{ route('user.service.report.reward') }}" class="btn btn-light btn-sm rounded-pill px-4 fw-semibold" style="background: rgba(255,255,255,0.95); color:#5b21b6; border:none;">Rewards View ></a>
                                             <a href="{{ route('user.service.report.reward') }}" class="btn btn-outline-light btn-sm rounded-pill px-4 fw-semibold" style="border-color: rgba(255,255,255,0.75);">My Points ></a>
                                         </div>
                                     </div>
@@ -767,7 +767,7 @@
                         </div>
                         <div>
                             <small style="font-size:0.6rem; display:block; line-height:1;">Benefits</small>
-                            <span style="font-weight:700; font-size:0.9rem;">₹ 5000</span>
+                            <span style="font-weight:700; font-size:0.9rem;">₹ {{ number_format($walletBalance ?? 0, 0) }}</span>
                         </div>
                     </div>
                 </div>
@@ -808,13 +808,16 @@
 
                 <div class="ecard-footer">
                     <div class="ecard-val">
-                        <span>₹ 50,000</span>
+                        <span>₹ {{ number_format((float)($user['ecard_limit'] ?? $user['wallet_limit'] ?? 50000), 0) }}</span>
+                        <small style="font-size: 0.65rem; opacity: 0.8; display: block;">Limit</small>
                     </div>
                     <div class="ecard-val">
-                        <span>₹ 5,000</span>
+                        <span>₹ {{ number_format($walletBalance ?? 0, 0) }}</span>
+                        <small style="font-size: 0.65rem; opacity: 0.8; display: block;">Balance</small>
                     </div>
                     <div class="ecard-val">
-                        <span>₹ 200</span>
+                        <span>{{ number_format((int)($user['reward_points'] ?? $user['points'] ?? $points ?? 200), 0) }}</span>
+                        <small style="font-size: 0.65rem; opacity: 0.8; display: block;">Points</small>
                     </div>
                 </div>
                 <i class="fas fa-wifi position-absolute" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(90deg); opacity: 0.5; font-size: 24px;"></i>
@@ -994,8 +997,8 @@
             <p>Your Next Reward Awaits!</p>
             <p class="small opacity-75">Explore & Earn Cashback</p>
             <div class="d-flex gap-2 justify-content-center mt-3">
-                <button class="btn btn-sm btn-light rounded-pill px-3">Rewards View ></button>
-                <button class="btn btn-sm btn-outline-light rounded-pill px-3">View Your Points ></button>
+                <a href="{{ route('user.service.report.reward') }}" class="btn btn-sm btn-light rounded-pill px-3">Rewards View ></a>
+                <a href="{{ route('user.service.report.reward') }}" class="btn btn-sm btn-outline-light rounded-pill px-3">View Your Points ></a>
             </div>
         </div>
 

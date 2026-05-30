@@ -98,10 +98,23 @@ class UserAuthController extends Controller
             return redirect()->route('user.login');
         }
 
-        $user = Session::get('user_auth');
-        $walletBalance = (float) (Registration::find($user['id'] ?? null)->wallet_balance ?? 0);
+        $userSession = Session::get('user_auth');
+        $user = Registration::find($userSession['id'] ?? null);
+        if (!$user) {
+            Session::forget('user_auth');
+            return redirect()->route('user.login');
+        }
 
-        return view('user.dashboard', compact('user', 'walletBalance'));
+        $walletBalance = (float) ($user->wallet_balance ?? 0);
+
+        // Calculate dynamic reward points based on order rewards
+        $rewards = $this->buildUserRewards($user);
+        $points = (int) ($rewards->sum('amount') * 10);
+        if ($points <= 0) {
+            $points = 200; // Fallback to 200 if no rewards exist yet
+        }
+
+        return view('user.dashboard', compact('user', 'walletBalance', 'points'));
     }
 
     /**
@@ -140,8 +153,19 @@ class UserAuthController extends Controller
 
         $userSession = Session::get('user_auth');
         $user = Registration::find($userSession['id']);
+        if (!$user) {
+            Session::forget('user_auth');
+            return redirect()->route('user.login');
+        }
 
-        return view('user.profile', compact('user'));
+        // Calculate dynamic reward points based on order rewards
+        $rewards = $this->buildUserRewards($user);
+        $points = (int) ($rewards->sum('amount') * 10);
+        if ($points <= 0) {
+            $points = 200; // Fallback to 200 if no rewards exist yet
+        }
+
+        return view('user.profile', compact('user', 'points'));
     }
 
     /**
