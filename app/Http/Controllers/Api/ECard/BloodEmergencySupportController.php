@@ -86,7 +86,9 @@ class BloodEmergencySupportController extends Controller
             ];
         });
 
-        $items = $urgentItems->merge($donorItems)->values();
+        // Both collections contain plain arrays (from ->map(...)), so concat is safer than merge.
+        $items = $urgentItems->concat($donorItems)->values();
+
 
         return response()->json([
             'success' => true,
