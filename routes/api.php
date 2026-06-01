@@ -114,6 +114,12 @@ Route::prefix('ecard')->group(function () {
         Route::get('/device-permission', [\App\Http\Controllers\Api\ECard\ProfileDetailController::class, 'devicePermission']);
         Route::post('/device-permission', [\App\Http\Controllers\Api\ECard\ProfileDetailController::class, 'setDevicePermission']);
 
+        // Transactions settings (payment enable/disable + shares breakdown) - best-effort
+        Route::get('/transactions/settings', [\App\Http\Controllers\Api\ECard\TransactionsSettingsController::class, 'settings']);
+        Route::post('/transactions/settings', [\App\Http\Controllers\Api\ECard\TransactionsSettingsController::class, 'updateSettings']);
+        Route::get('/transactions/payment-shares', [\App\Http\Controllers\Api\ECard\TransactionsSettingsController::class, 'paymentShares']);
+
+
         // E-Card Seva Users (list/verified/unverified verification)
 
         Route::get('/ecard-seva-users', [\App\Http\Controllers\Api\ECard\SevaUsersController::class, 'listUsers']);

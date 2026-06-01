@@ -160,6 +160,9 @@ class ProfileDetailController extends Controller
             'success' => true,
             'data' => [
                 'device_sharing_enabled' => $enabled,
+                // UI-friendly alias
+                'allowed_device_count' => $max,
+                // Backward compatibility
                 'max_device_shares' => $max,
                 'logged_in_devices' => $sessions,
                 'logged_in_count' => $sessions->count(),
