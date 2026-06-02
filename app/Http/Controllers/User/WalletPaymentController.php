@@ -184,29 +184,52 @@ class WalletPaymentController extends Controller
         ];
 
         $base64Payload = base64_encode(json_encode($payload));
+        // Keep checksum exactly as expected by your existing PhonePe integration.
+        // Current project uses PhonePe Hermes where checksum = sha256(base64Payload + '/pg/v1/pay' + saltKey) + '###' + saltIndex
         $checksum = hash('sha256', $base64Payload.'/pg/v1/pay'.$saltKey).'###'.$saltIndex;
 
+
+        // NOTE: checksum format for PhonePe Hermes integration is:
+        // X-VERIFY: <sha256(base64Payload + '/pg/v1/pay' + saltKey) + '###' + saltIndex>
+        // If your account expects a different checksum format, initiation will fail.
         try {
+            $url = $baseUrl.'/pg/v1/pay';
+
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'X-VERIFY' => $checksum,
-            ])->post($baseUrl.'/pg/v1/pay', [
+            ])->post($url, [
                 'request' => $base64Payload,
             ]);
 
             $resData = $response->json();
-            if ($response->successful() && ($resData['success'] ?? false)) {
+
+            // Log raw response for debugging failed initiation
+            Log::error('PhonePe wallet initiate response', [
+                'http_status' => $response->status(),
+                'response' => $resData,
+            ]);
+
+            if ($response->successful() && (($resData['success'] ?? false) === true || isset($resData['code']))) {
                 $redirectUrl = data_get($resData, 'data.instrumentResponse.redirectInfo.url');
                 if (is_string($redirectUrl) && $redirectUrl !== '') {
                     return redirect()->away($redirectUrl);
                 }
+
+                // Some flows may return redirectUrl at a different key
+                $altRedirect = data_get($resData, 'data.instrumentResponse.redirectInfo.url');
+                if (is_string($altRedirect) && $altRedirect !== '') {
+                    return redirect()->away($altRedirect);
+                }
             }
 
-            return back()->with('error', 'Failed to initiate payment.');
+            $msg = $resData['message'] ?? 'Failed to initiate payment';
+            return back()->with('error', (string) $msg);
         } catch (\Throwable $e) {
             Log::error('PhonePe wallet initiation error', ['message' => $e->getMessage()]);
             return back()->with('error', 'Payment gateway error.');
         }
+
     }
 
     /**

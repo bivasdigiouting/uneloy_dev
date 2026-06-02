@@ -89,6 +89,7 @@
                                         <span class="menu-arrow"></span>
                                     </a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
 										<li><a href="{{ route('admin.departments.index') }}" class="@navactive('admin.departments.*')">Department Master</a></li>
 										<li><a href="{{ route('admin.designations.index') }}" class="@navactive('admin.designations.*')">Designation Master</a></li>
 										<li><a href="{{ route('admin.staff.index') }}" class="@navactive('admin.staff.*')">Staff Master</a></li>
@@ -117,6 +118,7 @@
 										<span class="menu-arrow"></span>
 									</a>
                                     <ul>
+                                        <li><a href="#"> Overview</a></li>
                                         <li><a href="{{route('admin.business-categories.index')}}" class="@navactive('admin.business-categories.*')">Business Category Master</a></li>
                                         {{-- <li><a href="{{ route('admin.expenses.index') }}" class="@navactive('admin.expenses.*')">Expense Master</a></li>
                                         <li><a href="{{ route('admin.states.index') }}" class="@navactive('admin.states.*')">State Master</a></li> --}}
@@ -135,10 +137,11 @@
 										<span class="menu-arrow"></span>
 									</a>
                                     <ul>
+                                        <li><a href="#"> Overview</a></li>
                                         <li><a href="{{ route('admin.affiliates.index') }}" class="@navactive('admin.affiliates.*')">Affiliate Master</a></li>
                                         <li><a href="{{ route('admin.affiliate-links.index') }}" class="@navactive('admin.affiliate-links.*')">Affiliate Link Creation</a></li>
                                         <li><a href="{{ route('admin.affiliate-apis.index') }}" class="@navactive('admin.affiliate-apis.*')">Affiliate API</a></li>
-                                        
+
 										<li><a href="{{ route('admin.banners.index') }}" class="@navactive('admin.banners.*')">Banner Master</a></li>
                                     </ul>
 								</li>
@@ -149,6 +152,7 @@
 										<span class="menu-arrow"></span>
 									</a>
                                     <ul>
+                                        <li><a href="#"> Overview</a></li>
                                         <li><a href="{{ route('admin.banks.index') }}" class="@navactive('admin.banks.*')">Bank Master</a></li>
                                         <li><a href="{{ route('admin.company-upis.index') }}" class="@navactive('admin.company-upis.*')">Company UPI Master</a></li>
                                         <li><a href="{{ route('admin.gst-taxes.index') }}" class="@navactive('admin.gst-taxes.*')">GST Tax Master</a></li>
@@ -162,13 +166,14 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
 										<li><a href="{{ route('admin.advertisements.index') }}" class="@navactive('admin.advertisements.*')">Advertisement Master</a></li>
                                         <li><a href="{{ route('admin.social-media.index') }}" class="@navactive('admin.social-media.*')">Social Media Master</a></li>
                                         <li><a href="{{ route('admin.leads.index') }}" class="@navactive('admin.leads.*')">Lead Master</a></li>
                                         {{-- <li><a href="#">A/R Advertisement</a></li> --}}
                                         <li><a href="{{ route('admin.reports.advertisements.approve-reject.index') }}" class="@navactive('admin.reports.advertisements.approve-reject.*')">A/R Advertisement Report</a></li>
-										
-										
+
+
 									</ul>
 								</li>
 
@@ -178,13 +183,14 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
-										<li><a href="{{ route('admin.product-categories.index') }}" class="@navactive('admin.product-categories.*')">Product Category</a></li>										
+                                        <li><a href="#"> Overview</a></li>
+										<li><a href="{{ route('admin.product-categories.index') }}" class="@navactive('admin.product-categories.*')">Product Category</a></li>
 										<li><a href="{{ route('admin.level-wise-commissions.index') }}" class="@navactive('admin.level-wise-commissions.*')">Product Category Comm.</a></li>
 										<li><a href="{{ route('admin.vendor-products.index') }}" class="@navactive('admin.vendor-products.*')">Vendor Products Approval</a></li>
 										{{-- <li><a href="#">Update Product Image</a></li> --}}
-										
-										
-										
+
+
+
 									</ul>
 								</li>
 								<li class="submenu">
@@ -193,16 +199,17 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
-										<li><a href="{{ route('admin.inhouse-product-categories.index') }}" class="@navactive('admin.inhouse-product-categories.*')">Product Category</a></li>										
+                                        <li><a href="#"> Overview</a></li>
+										<li><a href="{{ route('admin.inhouse-product-categories.index') }}" class="@navactive('admin.inhouse-product-categories.*')">Product Category</a></li>
 										<li><a href="{{ route('admin.inhouse-products.index') }}" class="@navactive('admin.inhouse-products.*')">Product Master</a></li>
 										<li><a href="{{ route('admin.ecard-seva-product-commissions.index') }}" class="@navactive('admin.ecard-seva-product-commissions.*')">E Card Seva Product Comm.</a></li>
 										<li><a href="{{ route('admin.product-stock-transactions.index') }}" class="@navactive('admin.product-stock-transactions.*')">Add Product Stock</a></li>
                                         <li><a href="{{ route('admin.stock-transfers.index') }}" class="@navactive('admin.stock-transfers.*')">Stock Transfer</a></li>
 										<li><a href="{{ route('admin.stock-transfers.report') }}" class="@navactive('admin.stock-transfers.report')">Stock Transfer Report</a></li>
                                         <li><a href="{{ route('admin.stock-ar-req.report') }}" class="@navactive('admin.stock-ar-req.report')">A & R Req. Stock Report</a></li>
-										
-										
-										
+
+
+
 									</ul>
 								</li>
 
@@ -212,10 +219,11 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
 										<li><a href="{{ route('admin.points.admin-user-report.index') }}" class="@navactive('admin.points.admin-user-report.*')">Admin by User Point Report</a></li>
 										<li><a href="{{ route('admin.points.vendor-user-report.index') }}" class="@navactive('admin.points.vendor-user-report.*')">Vendor by User Point Report</a></li>
-										
-										
+
+
 									</ul>
 								</li>
 
@@ -225,7 +233,8 @@
                                         <span class="menu-arrow"></span>
                                     </a>
                                     <ul>
-                                        <li><a href="{{ route('admin.reports.common-summary.index') }}" class="@navactive('admin.reports.common-summary.*')">Common Summary Report</a></li>                                        
+                                        <li><a href="#"> Overview</a></li>
+                                        <li><a href="{{ route('admin.reports.common-summary.index') }}" class="@navactive('admin.reports.common-summary.*')">Common Summary Report</a></li>
                                         <li><a href="{{ route('admin.reports.voucher-details.index') }}" class="@navactive('admin.reports.voucher-details.*')">Voucher Details Report</a></li>
                                         <li><a href="{{ route('admin.reports.commission-summary.index') }}" class="@navactive('admin.reports.commission-summary.*')">Commission Summary Report</a></li>
                                         <li><a href="{{ route('admin.reports.cashback.index') }}" class="@navactive('admin.reports.cashback.*')">Cashback Report</a></li>
@@ -236,8 +245,8 @@
                                         <li><a href="{{ route('admin.reports.login-history.index') }}" class="@navactive('admin.reports.login-history.*')">Login History</a></li>
 										<li><a href="#">UserId Upgrade Report</a></li>
 										<li><a href="#">Login History</a></li>
-                                        <li><a href="{{ route('admin.reports.help-support.index') }}" class="@navactive('admin.reports.help-support.*')">Help & Support Report</a></li>                                        
-										
+                                        <li><a href="{{ route('admin.reports.help-support.index') }}" class="@navactive('admin.reports.help-support.*')">Help & Support Report</a></li>
+
 									</ul>
 								</li>
 
@@ -247,11 +256,12 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
 										<li><a href="{{ route('admin.redeem-values.index') }}" class="@navactive('admin.redeem-values.index')">Add Redeem Value</a></li>
 										<li><a href="{{ route('admin.redeem-values.history.index') }}" class="@navactive('admin.redeem-values.history.*')">Redeem Value History</a></li>
 										<li><a href="{{ route('admin.redeem-values.user-redeem-report.index') }}" class="@navactive('admin.redeem-values.user-redeem-report.*')">User Redeem Report</a></li>
-																			
-										
+
+
 									</ul>
 								</li>
 
@@ -261,8 +271,9 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
                                         <li><a href="{{ route('admin.benefits.index') }}" class="@navactive('admin.benefits.*')">Benefits Master</a></li>
-                                        <li><a href="{{ route('admin.services.index') }}" class="@navactive('admin.services.*')">Service Master</a></li>                                        
+                                        <li><a href="{{ route('admin.services.index') }}" class="@navactive('admin.services.*')">Service Master</a></li>
                                         <li><a href="{{ route('admin.helplines.index') }}" class="@navactive('admin.helplines.*')">Helpline Master</a></li>
                                         <li><a href="{{ route('admin.camps.index') }}" class="@navactive('admin.camps.*')">Camp Master</a></li>
                                         <li><a href="{{ route('admin.camp-details.index') }}" class="@navactive('admin.camp-details.*')">Add Camp details</a></li>
@@ -275,8 +286,8 @@
                                         <li><a href="{{ route('admin.benefits.blood-donate-other-points-report.index') }}" class="@navactive('admin.benefits.blood-donate-other-points-report.*')">Blood Donate Other Points Report</a></li>
                                         <li><a href="{{ route('admin.benefits.ecard-seva-other-points-report.index') }}" class="@navactive('admin.benefits.ecard-seva-other-points-report.*')">ECS Other Points Report</a></li>
                                         <li><a href="{{ route('admin.benefits.emergency-ecard-seva-other-points-report.index') }}" class="@navactive('admin.benefits.emergency-ecard-seva-other-points-report.*')">Emergency Other Points Report</a></li>
-																			
-										
+
+
 									</ul>
 								</li>
 
@@ -286,6 +297,7 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
 									<li><a href="{{ route('admin.membership.eps-user-fund.index') }}" class="@navactive('admin.membership.eps-user-fund.*')">E.P.S User Fund</a></li>
 									<li><a href="#">E.P.S User Fund Report</a></li>
 									<li><a href="{{ route('admin.membership.eps-global-disburs-report.index') }}" class="@navactive('admin.membership.eps-global-disburs-report.*')">Global Disburs. Level Fund Report</a></li>
@@ -298,8 +310,8 @@
 									</a>
 									<ul>
 										<li><a href="{{ route('admin.eps-level-fund.index') }}" class="@navactive('admin.eps-level-fund.*')">Global Disburs. Level Fund</a></li>
-										<li><a href="{{ route('admin.eps-level-fund-report.index') }}" class="@navactive('admin.eps-level-fund-report.*')">Global Disburs. Level Fund Report</a></li>									
-										
+										<li><a href="{{ route('admin.eps-level-fund-report.index') }}" class="@navactive('admin.eps-level-fund-report.*')">Global Disburs. Level Fund Report</a></li>
+
 									</ul>
 								</li>
 
@@ -309,9 +321,10 @@
 									<span class="menu-arrow"></span>
 								</a>
 								<ul>
+                                    <li><a href="#"> Overview</a></li>
 									<li><a href="{{ route('admin.vendor-global-fund.index') }}" class="@navactive('admin.vendor-global-fund.*')">Vendor Global Disburs. Fund</a></li>
 									<li><a href="{{ route('admin.vendor-global-fund-report.index') }}" class="@navactive('admin.vendor-global-fund-report.*')">Vendor Global Disburs. Fund Report</a></li>
-									
+
 								</ul>
 							</li>
 
@@ -321,11 +334,12 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul id="ecard-seva-modules" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                                        <li><a href="#"> Overview</a></li>
 										<li><a href="{{ route('admin.ecard-seva-approve-kyc-documents.index') }}" class="@navactive('admin.ecard-seva-approve-kyc-documents.*')">Approve KYC Document</a></li>
 										<li><a href="{{ route('admin.ecard-seva-ar-withdrawal-report.index') }}" class="@navactive('admin.ecard-seva-ar-withdrawal-report.*')"> A/R Withdrawal Report</a></li>
-                                            
-										<li><a href="{{ route('admin.retailer-employee-permissions.index') }}" class="@navactive('admin.retailer-employee-permissions.*')">See Retailer/Employee Permission</a></li>										
-										
+
+										<li><a href="{{ route('admin.retailer-employee-permissions.index') }}" class="@navactive('admin.retailer-employee-permissions.*')">See Retailer/Employee Permission</a></li>
+
 									</ul>
 								</li>
 
@@ -335,10 +349,11 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
 										<li><a href="{{ route('admin.department-commissions.index') }}" class="@navactive('admin.department-commissions.*')">Department Module Comm. Master</a></li>
 										<li><a href="{{ route('admin.first-recharge-plans.index') }}" class="@navactive('admin.first-recharge-plans.*')">First Recharge Plan Master</a></li>
-										<li><a href="{{ route('admin.commission-tds-charge-report.index') }}" class="@navactive('admin.commission-tds-charge-report.*')">Commission TDS Charge Report</a></li>									 
-										
+										<li><a href="{{ route('admin.commission-tds-charge-report.index') }}" class="@navactive('admin.commission-tds-charge-report.*')">Commission TDS Charge Report</a></li>
+
 									</ul>
 								</li>
 
@@ -348,14 +363,15 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                        <li><a href="#"> Overview</a></li>
 										<li><a href="{{ route('admin.recharge-services.index') }}" class="@navactive('admin.recharge-services.*')">Recharge Service</a></li>
 										<li><a href="{{ route('admin.recharge-operators.index') }}" class="@navactive('admin.recharge-operators.*')">Recharge Operator</a></li>
 										<li><a href="{{ route('admin.recharge-summary-report.index') }}" class="@navactive('admin.recharge-summary-report.*')">Recharge Summary Report</a></li>
 										<li><a href="{{ route('admin.recharge-report.index') }}" class="@navactive('admin.recharge-report.*')">Recharge Report</a></li>
 										<li><a href="{{ route('admin.recharge-commissions.index') }}" class="@navactive('admin.recharge-commissions.*')">User Commission</a></li>
-										{{-- <li><a href="#">Level Commission</a></li>	
+										{{-- <li><a href="#">Level Commission</a></li>
 										<li><a href="#">User Beneficiary</a></li>								 --}}
-										
+
 								</ul>
 							</li>
 
@@ -369,7 +385,7 @@
 								</ul>
 							</li>
 
-                                
+
 							</ul>
 						</li>
 
@@ -382,8 +398,9 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
-										<li><a href="{{ route('admin.vendor-types.index') }}" class="@navactive('admin.vendor-types.*')">Vendor Type</a></li>										
-										<li><a href="{{ route('admin.vendors.index') }}" class="@navactive('admin.vendors.*')">Vendor Master</a></li>										
+                                        <li><a href="#"> Overview</a></li>
+										<li><a href="{{ route('admin.vendor-types.index') }}" class="@navactive('admin.vendor-types.*')">Vendor Type</a></li>
+										<li><a href="{{ route('admin.vendors.index') }}" class="@navactive('admin.vendors.*')">Vendor Master</a></li>
 										<li><a href="{{ route('admin.vendor.wallet.management') }}" class="@navactive('admin.vendor.wallet.management')">Add/Remove Vendor Wallet</a></li>
 										<li><a href="{{ route('admin.vendor.wallet.summary.index') }}" class="@navactive('admin.vendor.wallet.summary.*')">Vendor Wallet Summary</a></li>
 										<li><a href="{{ route('admin.vendor.wallet.request-report.index') }}" class="@navactive('admin.vendor.wallet.request-report.*')">Wallet Request Report</a></li>
@@ -392,7 +409,7 @@
 										<li><a href="{{ route('admin.vendor.view-orders.index') }}" class="@navactive('admin.vendor.view-orders.*')">View Order</a></li>
 										<li><a href="{{ route('admin.vendor.approve-kyc.index') }}" class="@navactive('admin.vendor.approve-kyc.*')">Approve KYC</a></li>
 										<li><a href="#">A/R Bank Settlement Req</a></li>
-										
+
 									</ul>
 								</li>
 								<li class="submenu">
@@ -401,12 +418,13 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                            <li><a href="#"> Overview</a></li>
 										    <!--<li><a href="{{ route('admin.registrations.index') }}">Registration</a></li>-->
                                             <li><a href="{{ route('admin.ecard-registrations.index') }}" class="@navactive('admin.ecard-registrations.*')"> E - Card Registration</a></li>
                                             <li><a href="{{ route('admin.ecard-seva-summary.index') }}" class="@navactive('admin.ecard-seva-summary.*')"> E-Card Seva Summary</a></li>
                                             <li><a href="{{ route('admin.user-wallet-request.index') }}" class="@navactive('admin.user-wallet-request.*')"> E-Card Request Report</a></li>
 											<li><a href="{{ route('admin.ecard-seva-wallet-request-report.index') }}" class="@navactive('admin.ecard-seva-wallet-request-report.*')"> E-Card Seva Wallet Summary Report</a></li>
-                                            
+
                                             <li><a href="{{ route('admin.ecard-seva-wallet-request-report.index') }}" class="@navactive('admin.ecard-seva-wallet-request-report.*')"> E-Card Seva Wallet Req. Report</a></li>
                                             <!--<li><a href="{{ route('admin.notification-master.index') }}"> Notification Master</a></li>-->
                                             <li><a href="{{ route('admin.ecard-seva-user-utility-affiliate-links.index') }}" class="@navactive('admin.ecard-seva-user-utility-affiliate-links.*')"> User Utility &amp; Affiliate Link</a></li>
@@ -417,8 +435,10 @@
 											 <li><a href="{{ route('admin.registrations.index') }}" class="@navactive('admin.registrations.*')">E Card Print</a></li>
 											 <li><a href="{{ route('admin.registrations.index') }}" class="@navactive('admin.registrations.*')">E Card Print Report</a></li>
 											 <li><a href="{{ route('admin.registrations.index') }}" class="@navactive('admin.registrations.*')">E Card Authorization Letter</a></li>
+                                             <li><a href="{{ route('admin.wallet.request-report.index') }}" class="@navactive('admin.wallet.request-report.*')"> Level Wallet Req. Report</a></li>
 											 <li><a href="{{ route('admin.registrations.index') }}" class="@navactive('admin.registrations.*')">Accept Agreement Letter</a></li>
-										
+                                             <li><a href="{{ route('admin.security-amount-master.index') }}" class="@navactive('admin.security-amount-master.*')">Security Amount Master</a></li>
+
 									</ul>
 								</li>
 								<li class="submenu">
@@ -427,21 +447,20 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
+                                            <li><a href="#"> Overview</a></li>
 										    <li><a href="{{ route('admin.registrations.index') }}" class="@navactive('admin.registrations.*')">Registrations</a></li>
                                             <li><a href="{{ route('admin.wallet.management') }}" class="@navactive('admin.wallet.management')"> Add/Remove User Wallet</a></li>
 												    <li><a href="{{ route('admin.membership.details.index') }}" class="@navactive('admin.membership.details.*')"> My Membership Details</a></li>
-                                            
+
                                             <li><a href="{{ route('admin.wallet.summary.index') }}" class="@navactive('admin.wallet.summary.*')"> User Wallet Summary</a></li>
                                             <li><a href="{{ route('admin.user-wallet-request.index') }}" class="@navactive('admin.user-wallet-request.*')"> User Wallet Request</a></li>
-									<li><a href="{{ route('admin.wallet.request-report.index') }}" class="@navactive('admin.wallet.request-report.*')"> Level Wallet Req. Report</a></li>
                                             <li><a href="{{ route('admin.notification-master.index') }}" class="@navactive('admin.notification-master.*')"> Notification Master</a></li>
                                             <li><a href="{{ route('admin.user-utility-affiliate-links.index') }}" class="@navactive('admin.user-utility-affiliate-links.*')"> User Utility &amp; Affiliate Link</a></li>
                                             <li><a href="{{ route('admin.view-orders.index') }}" class="@navactive('admin.view-orders.*')"> View Order</a></li>
                                             {{-- <li><a href="#"> A/R User Withdrawal Request</a></li> --}}
                                             <li><a href="{{ route('admin.user-ecard-report.index') }}" class="@navactive('admin.user-ecard-report.*')"> User e-card Report</a></li>
                                             <li><a href="#"> User e-Card Print Report</a></li>
-                                            <li><a href="{{ route('admin.security-amount-master.index') }}" class="@navactive('admin.security-amount-master.*')">Security Amount Master</a></li>
-										
+
 									</ul>
 								</li>
 
@@ -470,7 +489,7 @@
 										<li><a href="#">Profile</a></li>
 										<li><a href="#">Security</a></li>
 										<li><a href="{{ route('admin.settings.notification') }}" class="@navactive('admin.settings.notification')">Notification Settings</a></li>
-										
+
 									</ul>
 								</li>
 										<li class="submenu submenu-two">
@@ -478,7 +497,7 @@
 											<ul>
 												<li><a href="{{ route('admin.settings.website') }}" class="@navactive('admin.settings.website')">General Settings</a></li>
 												<li><a href="#">SEO Settings</a></li>
-												
+
 											</ul>
 										</li>
 										{{-- <li class="submenu submenu-two">
@@ -487,7 +506,7 @@
 												<li><a href="#">Salary Settings</a></li>
 												<li><a href="#">Approval Settings</a></li>
 												<li><a href="#">Invoice Settings</a></li>
-												
+
 											</ul>
 										</li> --}}
 								<li class="submenu submenu-two">
@@ -538,7 +557,7 @@
 										<span class="menu-arrow"></span>
 									</a>
 									<ul>
-										<li><a href="{{ route('admin.menus.index') }}" class="@navactive('admin.menus.*')">Main Menu</a></li>										
+										<li><a href="{{ route('admin.menus.index') }}" class="@navactive('admin.menus.*')">Main Menu</a></li>
                                         <li><a href="{{ route('admin.home-sliders.index') }}" class="@navactive('admin.home-sliders.*')">Home Slider</a></li>
                                         <li class="submenu submenu-two">
                                             <a href="javascript:void(0);" class="@navopen('admin.about-us.*')">About Us<span class="menu-arrow inside-submenu"></span></a>
@@ -597,12 +616,12 @@
 										<li><a href="{{ route('admin.cms-pages.index') }}" class="@navactive('admin.cms-pages.*')">Policy Page</a></li>
 										<li><a href="{{ route('admin.website-benefits.index') }}" class="@navactive('admin.website-benefits.*')">Website Benefit List</a></li>
 										<li><a href="{{ route('admin.special-features.index') }}" class="@navactive('admin.special-features.*')">Special Features</a></li>
-										
+
 									</ul>
 								</li>
 							</ul>
 						</li>
-						
+
 						<li class="menu-title"><span>Extras</span></li>
 						<li>
 							<ul>
@@ -616,8 +635,8 @@
 									<a href="javascript:void(0);"><i class="ti ti-exchange"></i><span>Changelog</span><span class="badge bg-pink badge-xs text-white fs-10 ms-s">v4.0.2</span></a>
 								</li>
 
-                                
-                                
+
+
                                 <li class="submenu">
 									<a href="javascript:void(0);">
 										<i class="ti ti-headset"></i><span>Help & Supports</span>
@@ -628,7 +647,7 @@
 										<li><a href="activity.html">Activities</a></li>
 									</ul>
 								</li>
-								
+
 							</ul>
 						</li>
 					</ul>

@@ -184,14 +184,12 @@ class BillingPaymentController extends Controller
             // For that, we just pass required fields.
 
             $redirectUrl = route('vendor.billing.phonepe.checkout', [
-                'merchant_id' => $merchantId,
-                'salt_index' => $saltIndex,
+                // Keep only what the server needs to create the payment request
                 'amount' => $amount,
                 'transaction_id' => $orderId,
                 'environment' => $env,
-                // NOTE: In production you should not expose saltKey to browser.
-                // Here we keep only what the server needs; salts should be handled server-side in that view/controller.
             ]);
+
 
             return response()->json(['redirect_url' => $redirectUrl]);
         } catch (\Throwable $e) {

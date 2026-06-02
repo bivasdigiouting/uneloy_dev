@@ -193,6 +193,10 @@ Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function ()
     Route::post('/menus/{id}/duplicate', [\App\Http\Controllers\Admin\MenuController::class, 'duplicate'])->name('menus.duplicate');
     Route::get('/menus/hierarchical/{type}', [\App\Http\Controllers\Admin\MenuController::class, 'getHierarchical'])->name('menus.hierarchical');
 
+    // Menu Overview (per head menu)
+    Route::get('/menus/{menu}/overview', [\App\Http\Controllers\Admin\MenuOverviewController::class, 'index'])->name('menus.overview.index');
+
+
     // E Card Seva Product Commission Routes
     Route::post('ecard-seva-product-commissions/show-details', [\App\Http\Controllers\Admin\EcardSevaProductCommissionController::class, 'showDetails'])->name('ecard-seva-product-commissions.show-details');
     Route::post('ecard-seva-product-commissions/{id}/toggle-status', [\App\Http\Controllers\Admin\EcardSevaProductCommissionController::class, 'toggleStatus'])->name('ecard-seva-product-commissions.toggle-status');

@@ -4,27 +4,31 @@
 
 @section('content')
 <div class="p-6">
-    <h2 class="text-xl font-bold text-slate-900 mb-2">Processing PhonePe Payment...</h2>
-    <p class="text-sm text-slate-600">Redirecting to PhonePe. Please wait.</p>
+    <h2 class="text-xl font-bold text-slate-900 mb-2">Redirecting to PhonePe...</h2>
+    <p class="text-sm text-slate-600">Please wait. Do not refresh this page.</p>
+
+    @if(isset($transaction_id))
+        <div class="mt-4 text-xs text-slate-500">
+            Transaction ID: {{ $transaction_id }}
+        </div>
+    @endif
+    @if(isset($amount))
+        <div class="text-xs text-slate-500">
+            Amount: {{ $amount }}
+        </div>
+    @endif
 </div>
 
-{{--
-NOTE:
-Full PhonePe checkout requires server-side checksum generation and initiate call.
-If you already have working PhonePe flow elsewhere, replace this page to call it.
-For now this page is a placeholder to prove the Pay Now click -> redirect pipeline.
---}}
-
 <script>
-    (function(){
-        // Placeholder: no-op
-        // You should integrate actual PhonePe redirect here.
-        console.warn('PhonePe checkout page is placeholder - implement server-side PhonePe initiate + redirect.');
-        setTimeout(function(){
-            alert('PhonePe checkout not yet implemented. Contact admin or enable working gateway flow.');
-        }, 500);
-    })();
+(function () {
+    const redirectUrl = @json($redirect_url ?? null);
+    if (!redirectUrl) {
+        alert('PhonePe initiate failed: missing redirectUrl');
+        return;
+    }
+    // Redirect using full URL returned by PhonePe.
+    window.location.href = redirectUrl;
+})();
 </script>
-
 @endsection
 

@@ -30,9 +30,8 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
             ]);
         })->name('billing.cashfree.checkout');
 
-        Route::get('/billing/phonepe/checkout', function () {
-            return view('vendor.billing.phonepe-checkout');
-        })->name('billing.phonepe.checkout');
+        Route::get('/billing/phonepe/checkout', [\App\Http\Controllers\Vendor\PhonePeController::class, 'checkout'])->name('billing.phonepe.checkout');
+
 
 
         Route::get('/products', [\App\Http\Controllers\Vendor\VendorProductController::class, 'index'])->name('products');
