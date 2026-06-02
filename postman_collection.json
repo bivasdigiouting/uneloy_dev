@@ -8,7 +8,7 @@
             "value": "https:\/\/ecardseva.uonely.com"
         }
     ],
-    "info": {
+"info": {
         "name": "Uonely Solution Pvt. Ltd. - A Company that provide, infinite solutions. API Documentation",
         "_postman_id": "eb25027f-43b5-4053-8d4d-3cc88f61e82f",
         "description": "ECard App API provides endpoints for ECard user authentication, MPIN management, and profile verification.",

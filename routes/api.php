@@ -46,7 +46,21 @@ Route::prefix('vendor')->group(function () {
     // Protected APIs
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/dashboard', [VendorProfileApiController::class, 'dashboard']);
+
+        // Available stock summary for vendor portal
+        Route::get('/inventory/summary', [\App\Http\Controllers\Api\Vendor\VendorInventoryApiController::class, 'summary']);
+
+        // Inventory stock list (Vendor Portal -> Inventory tab)
+        Route::get('/inventory/stock-list', [\App\Http\Controllers\Api\Vendor\VendorInventoryApiController::class, 'stockList']);
+
+
+        // Vendor New Members (Today/Monthly/Yearly/Selected date)
+        Route::get('/new-members/report', [\App\Http\Controllers\Api\Vendor\VendorNewMembersController::class, 'report']);
+        Route::get('/new-members/summary', [\App\Http\Controllers\Api\Vendor\VendorNewMembersController::class, 'summary']);
+        Route::get('/new-members/list', [\App\Http\Controllers\Api\Vendor\VendorNewMembersController::class, 'list']);
+
         Route::get('/profile', [VendorProfileApiController::class, 'profile']);
+
         Route::post('/profile', [VendorProfileApiController::class, 'updateProfile']);
         Route::post('/change-password', [VendorProfileApiController::class, 'changePassword']);
 
@@ -56,13 +70,50 @@ Route::prefix('vendor')->group(function () {
 
         Route::post('/billing/pay', [VendorBillingApiController::class, 'pay']);
 
+        // New bill tab (search customer + fetch purchased products to generate bill)
+        Route::get('/billing/new-bill/customers/search', [\App\Http\Controllers\Api\Vendor\VendorNewBillTabApiController::class, 'searchCustomers']);
+        Route::get('/billing/new-bill/purchased-products', [\App\Http\Controllers\Api\Vendor\VendorNewBillTabApiController::class, 'purchasedProducts']);
+
+        // Transactions + statements
+
+        Route::get('/transactions', [\App\Http\Controllers\Api\Vendor\VendorTransactionsApiController::class, 'list']);
+        Route::get('/transactions/{id}', [\App\Http\Controllers\Api\Vendor\VendorTransactionsApiController::class, 'details']);
+        Route::get('/statements', [\App\Http\Controllers\Api\Vendor\VendorTransactionsApiController::class, 'statements']);
+
+        // Earnings trend + breakdown
+        Route::get('/earnings/daily-trend', [\App\Http\Controllers\Api\Vendor\VendorEarningsTrendApiController::class, 'dailyTrend']);
+        Route::get('/earnings/breakdown', [\App\Http\Controllers\Api\Vendor\VendorEarningsTrendApiController::class, 'breakdown']);
+
+        // Staff
         Route::get('/staff', [VendorStaffApiController::class, 'index']);
         Route::post('/staff', [VendorStaffApiController::class, 'store']);
+        Route::get('/staff/report', [\App\Http\Controllers\Api\Vendor\VendorStaffReportApiController::class, 'staffReport']);
+        Route::get('/staff/sales', [\App\Http\Controllers\Api\Vendor\VendorStaffReportApiController::class, 'salesByStaff']);
+
+        // Report Analytics Tab (Daily/Monthly/Yearly + Inventory)
+        Route::get('/reports/analytics/daily', [\App\Http\Controllers\Api\Vendor\VendorReportAnalyticsApiController::class, 'daily']);
+        Route::get('/reports/analytics/monthly', [\App\Http\Controllers\Api\Vendor\VendorReportAnalyticsApiController::class, 'monthly']);
+        Route::get('/reports/analytics/yearly', [\App\Http\Controllers\Api\Vendor\VendorReportAnalyticsApiController::class, 'yearly']);
+        Route::get('/reports/analytics/inventory', [\App\Http\Controllers\Api\Vendor\VendorReportAnalyticsApiController::class, 'inventory']);
+
+        // Stock + alerts + charts
+        Route::get('/stock/remaining', [\App\Http\Controllers\Api\Vendor\VendorStockAlertsApiController::class, 'remaining']);
+        Route::get('/stock/reminders', [\App\Http\Controllers\Api\Vendor\VendorStockAlertsApiController::class, 'reminders']);
+        Route::get('/stock/restock-alerts', [\App\Http\Controllers\Api\Vendor\VendorStockAlertsApiController::class, 'restockAlerts']);
+        Route::get('/stock/quantity-breakdown', [\App\Http\Controllers\Api\Vendor\VendorStockAlertsApiController::class, 'quantityBreakdown']);
+
+
+        // Vendor Sales dashboard (today/monthly/yearly/custom)
+        Route::get('/sales/summary', [\App\Http\Controllers\Api\Vendor\VendorSalesApiController::class, 'summary']);
+        Route::get('/sales/breakdown', [\App\Http\Controllers\Api\Vendor\VendorSalesApiController::class, 'breakdown']);
+        Route::get('/sales/top-products', [\App\Http\Controllers\Api\Vendor\VendorSalesApiController::class, 'topProducts']);
+
 
         Route::get('/payroll', [VendorPayrollApiController::class, 'index']);
         Route::post('/payroll/process', [VendorPayrollApiController::class, 'process']);
     });
 });
+
 
 // ECard API Routes
 Route::prefix('ecard')->group(function () {
@@ -118,6 +169,13 @@ Route::prefix('ecard')->group(function () {
         Route::get('/transactions/settings', [\App\Http\Controllers\Api\ECard\TransactionsSettingsController::class, 'settings']);
         Route::post('/transactions/settings', [\App\Http\Controllers\Api\ECard\TransactionsSettingsController::class, 'updateSettings']);
         Route::get('/transactions/payment-shares', [\App\Http\Controllers\Api\ECard\TransactionsSettingsController::class, 'paymentShares']);
+
+        // E-Card Seva: Sell/Buy Points breakdown
+        Route::get('/seva-points/sell-buy/breakdown', [\App\Http\Controllers\Api\ECard\EcardSevaSellBuyPointsController::class, 'breakdown']);
+        Route::get('/seva-points/sell-buy/list', [\App\Http\Controllers\Api\ECard\EcardSevaSellBuyPointsController::class, 'list']);
+
+
+
 
 
         // E-Card Seva Users (list/verified/unverified verification)
