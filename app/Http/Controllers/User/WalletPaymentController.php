@@ -160,21 +160,28 @@ class WalletPaymentController extends Controller
             return back()->with('error', 'PhonePe configuration is missing.');
         }
 
-        $baseUrl = ($env === 'LIVE' || $gateway->active_mode === 'live')
-            ? 'https://api.phonepe.com/apis/hermes'
-            : 'https://api-preprod.phonepe.com/apis/pg-sandbox';
+        // PhonePe initiate base URLs.
+        // IMPORTANT: Keep Hermes/PG consistent with how your PhonePe account is configured.
+        // In your logs, Hermes was mapped with 404 and PG returns: "Bad Request - Api Mapping Not Found".
+        // That indicates the initiate endpoint+payload format is not matching your PhonePe integration.
+        // We'll stop guessing by using ONLY PG initiate format (consistent with `apis/pg`).
+        $pgBaseUrl = ($env === 'LIVE' || $gateway->active_mode === 'live')
+            ? 'https://api.phonepe.com/apis/pg'
+            : 'https://api-preprod.phonepe.com/apis/pg';
+
 
         $amountPaise = (int) round($amount * 100);
         $transactionId = 'UWLT_'.$user->id.'_'.$amountPaise.'_'.time();
 
-        $callbackUrl = route('user.wallet.callback');
+        $redirectUrl = route('user.wallet.callback');
+        $callbackUrl = route('user.wallet.webhook');
 
         $payload = [
             'merchantId' => $merchantId,
             'merchantTransactionId' => $transactionId,
             'merchantUserId' => 'MUID'.$user->id,
             'amount' => $amountPaise,
-            'redirectUrl' => $callbackUrl,
+            'redirectUrl' => $redirectUrl,
             'redirectMode' => 'POST',
             'callbackUrl' => $callbackUrl,
             'mobileNumber' => $user->mobile_no ?? null,
@@ -193,16 +200,66 @@ class WalletPaymentController extends Controller
         // X-VERIFY: <sha256(base64Payload + '/pg/v1/pay' + saltKey) + '###' + saltIndex>
         // If your account expects a different checksum format, initiation will fail.
         try {
-            $url = $baseUrl.'/pg/v1/pay';
-
-            $response = Http::withHeaders([
+            $headers = [
                 'Content-Type' => 'application/json',
                 'X-VERIFY' => $checksum,
-            ])->post($url, [
-                'request' => $base64Payload,
-            ]);
+            ];
 
-            $resData = $response->json();
+            $pgUrlCandidates = [
+                $pgBaseUrl.'/pg/v1/pay',
+                $pgBaseUrl.'/v1/pay',
+            ];
+
+            $response = null;
+            $resData = null;
+            $lastError = null;
+
+            foreach ($pgUrlCandidates as $candidateUrl) {
+                try {
+                    Log::error('PhonePe wallet initiate attempt', [
+                        'pg_url' => $candidateUrl,
+                        'amountPaise' => $amountPaise,
+                        'transactionId' => $transactionId,
+                        'merchantId' => $merchantId,
+                        'callbackUrl' => $callbackUrl,
+                        'redirectUrl' => $redirectUrl,
+                        'checksum_preview' => substr((string) $checksum, 0, 12),
+                    ]);
+
+                    $response = Http::withHeaders($headers)->post($candidateUrl, [
+                        'request' => $base64Payload,
+                    ]);
+
+                    $resData = $response->json();
+
+                    // PhonePe mapping errors typically include this message.
+                    $message = $resData['message']
+                        ?? ($resData['error']['message'] ?? null)
+                        ?? '';
+
+                    if (stripos((string) $message, 'Api Mapping Not Found') !== false) {
+                        $lastError = $message;
+                        continue;
+                    }
+
+                    // If we got here, we have something other than mapping-not-found.
+                    $pgUrl = $candidateUrl;
+                    break;
+                } catch (\Throwable $e) {
+                    $lastError = $e->getMessage();
+                    continue;
+                }
+            }
+
+            if (! $response) {
+                Log::error('PhonePe wallet initiate failed: no response', [
+                    'lastError' => $lastError,
+                    'amountPaise' => $amountPaise,
+                    'transactionId' => $transactionId,
+                ]);
+                return back()->with('error', 'Failed to initiate payment (PhonePe). Please try again.');
+            }
+
 
             // Log raw response for debugging failed initiation
             Log::error('PhonePe wallet initiate response', [
@@ -210,20 +267,48 @@ class WalletPaymentController extends Controller
                 'response' => $resData,
             ]);
 
-            if ($response->successful() && (($resData['success'] ?? false) === true || isset($resData['code']))) {
-                $redirectUrl = data_get($resData, 'data.instrumentResponse.redirectInfo.url');
-                if (is_string($redirectUrl) && $redirectUrl !== '') {
-                    return redirect()->away($redirectUrl);
-                }
+            // Debug to help identify the exact redirect/callback error during wallet topup.
+            Log::error('PhonePe wallet initiate computed urls', [
+                'redirectUrl' => $redirectUrl,
+                'callbackUrl' => $callbackUrl,
+                'transactionId' => $transactionId,
+                'amountPaise' => $amountPaise,
+            ]);
 
-                // Some flows may return redirectUrl at a different key
-                $altRedirect = data_get($resData, 'data.instrumentResponse.redirectInfo.url');
-                if (is_string($altRedirect) && $altRedirect !== '') {
-                    return redirect()->away($altRedirect);
-                }
+            // PhonePe response structure can vary.
+            // Try common redirect locations before failing.
+            $redirectUrl = data_get($resData, 'data.instrumentResponse.redirectInfo.url')
+                ?? data_get($resData, 'data.instrumentResponse.redirectInfo');
+
+            if (is_string($redirectUrl) && $redirectUrl !== '') {
+                return redirect()->away($redirectUrl);
             }
 
-            $msg = $resData['message'] ?? 'Failed to initiate payment';
+            $altRedirect = data_get($resData, 'data.instrumentResponse.redirectInfo.url')
+                ?? data_get($resData, 'data.redirectUrl')
+                ?? data_get($resData, 'redirectUrl');
+
+            if (is_string($altRedirect) && $altRedirect !== '') {
+                return redirect()->away($altRedirect);
+            }
+
+            // If PhonePe didn't return redirectUrl, it means initiate failed.
+            // Add strong debug to know what exact request we sent.
+            Log::error('PhonePe wallet initiate no redirect url found', [
+                'http_status' => $response->status(),
+                'raw_response' => $resData,
+                'pg_url' => $pgUrl ?? null,
+                'amountPaise' => $amountPaise,
+                'transactionId' => $transactionId,
+                'merchantId' => $merchantId,
+                'callbackUrl' => $callbackUrl,
+                'redirectUrlIntended' => $redirectUrl,
+            ]);
+
+            $msg = $resData['message']
+                ?? ($resData['error']['message'] ?? null)
+                ?? ('Failed to initiate payment (code: '.(string) ($resData['code'] ?? 'n/a').')');
+
             return back()->with('error', (string) $msg);
         } catch (\Throwable $e) {
             Log::error('PhonePe wallet initiation error', ['message' => $e->getMessage()]);
@@ -237,6 +322,15 @@ class WalletPaymentController extends Controller
      */
     public function handleCallback(Request $request)
     {
+        Log::error('Wallet callback hit', [
+            'full_url' => $request->fullUrl(),
+            'method' => $request->method(),
+            'has_order_id' => $request->has('order_id'),
+            'has_response' => $request->has('response'),
+            'x_verify_present' => (bool) $request->header('X-VERIFY'),
+            'keys' => array_keys($request->all()),
+        ]);
+
         if ($request->has('order_id')) {
             return $this->handleCashfreeCallback($request);
         }
@@ -316,10 +410,23 @@ class WalletPaymentController extends Controller
                     }
 
                     if ($saltKey) {
-                        $calculatedChecksum = hash('sha256', $encodedResponse.$saltKey).'###'.$saltIndex;
-                        if ($calculatedChecksum === (string) $request->header('X-VERIFY')) {
+                        // Must match PhonePe Hermes initiate checksum format used in this project:
+                        // X-VERIFY: sha256(base64Payload + '/pg/v1/pay' + saltKey) + '###' + saltIndex
+                        // Here, base64Payload is the encodedResponse string we received.
+                        $calculatedChecksum = hash('sha256', $encodedResponse . '/pg/v1/pay' . $saltKey) . '###' . $saltIndex;
+
+                        Log::error('PhonePe callback checksum validation', [
+                            'transaction_candidate' => data_get($responseData, 'data.merchantTransactionId'),
+                            'encoded_response_present' => (is_string($encodedResponse) && $encodedResponse !== ''),
+                            'salt_index' => $saltIndex,
+                            'x_verify' => (string) $request->header('X-VERIFY'),
+                            'calculated_x_verify' => $calculatedChecksum,
+                        ]);
+
+                        if (hash_equals((string) $request->header('X-VERIFY'), $calculatedChecksum)) {
                             $paymentSuccess = true;
-                            $transactionId = $responseData['data']['merchantTransactionId'] ?? null;
+                            $transactionId = data_get($responseData, 'data.merchantTransactionId')
+                                ?? data_get($responseData, 'data.instrumentResponse.merchantTransactionId');
                         }
                     }
                 }
@@ -473,7 +580,21 @@ class WalletPaymentController extends Controller
 
     public function webhook(Request $request)
     {
-        // Implement if needed for async updates
-        return response()->json(['status' => 'ok']);
+        // PhonePe may confirm payment via webhook/callbackUrl.
+        // To make wallet recharge reliable, process the callback here too.
+        // This will credit wallet if PhonePe sends success payload.
+        // NOTE: this endpoint is POST-only.
+        // PhonePe usually sends webhook/callback here with POST method.
+        // We must not break redirect GET flow.
+        try {
+            return $this->handlePhonePeCallback($request);
+        } catch (\Throwable $e) {
+            Log::error('PhonePe wallet webhook failed', [
+                'error' => $e->getMessage(),
+                'payload' => $request->all(),
+            ]);
+
+            return response()->json(['status' => 'error', 'message' => 'webhook failed'], 500);
+        }
     }
 }
